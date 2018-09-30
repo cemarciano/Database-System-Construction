@@ -20,7 +20,7 @@ stream.once('open', function(fd) {
                  `${leite.pessoa.nascimento({ string: true })};` +
                  `${leite.pessoa.sexo()};` +
                  `${leite.pessoa.nome({ nomeDoMeio: true })};` +
-                 `${getRnd(1500, 10000).toFixed(2)};\n`);
+                 `${getRnd(1500, 10000).toFixed(2)}\n`);
   }
   stream.end();
 });
