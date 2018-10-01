@@ -34,7 +34,7 @@ void Block::persist() {
 }
 
 void Block::reset() {
-  delete [] this->records;
+  delete this->records;
   this->records = (const Record**) malloc(Block::MAX_SIZE);
   this->n_r = 0;
 }
