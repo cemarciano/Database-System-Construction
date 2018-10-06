@@ -142,3 +142,6 @@ Temporary Items
 !.vscode/extensions.json
 
 *.cbd
+out\.txt
+
+main

@@ -1,6 +1,9 @@
 #include "Record.h"
 
 #include <fstream>
+#include <stdint.h>
+
+typedef uint32_t u_int32_t;
 
 class Block {
   static const int64_t MAX_SIZE = 1024;

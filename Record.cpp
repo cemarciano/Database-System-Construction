@@ -1,6 +1,7 @@
 #include "Record.h"
 
 #include <iostream>
+#include <cstring>
 
 std::ostream& print(std::ostream& out, const char* str, size_t sz) {
   for (size_t i = 0; i < sz; i++) {
