@@ -6,9 +6,8 @@
 typedef uint32_t u_int32_t;
 
 class Block {
-  static const int64_t MAX_SIZE = 1024;
-  
-  std::ofstream   file;
+private:
+  std::fstream    file;
   const Record**  records;
   u_int32_t       n_r;
 
@@ -16,10 +15,15 @@ class Block {
   void reset();
 
 public:
-  u_int32_t write_blocks_used;
+  static const int64_t MAX_SIZE = 1024;
 
-  Block(const char* filename);
+  u_int32_t blocks_used;
+
+  Block(const char* filename, const char mode);
   ~Block();
 
+  const Record* get(const int idx);
+
   void write(const Record* r);
+  int read(const u_int64_t pos);
 };

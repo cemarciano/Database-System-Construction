@@ -24,7 +24,7 @@ Record::Record(const char* string) {
   idx += sizeof(this->dt_nasc) + 1;
   idx = this->csvcpy(this->sexo, string, idx, sizeof(this->sexo)) + 1;
   idx = this->csvcpy(this->nome, string, idx, sizeof(this->nome)) + 1;
-  this->salary = std::stof(string + idx);
+  this->salario = std::stof(string + idx);
 }
 
 std::ostream& operator<<(std::ostream& out, const Record& r) {
@@ -34,7 +34,7 @@ std::ostream& operator<<(std::ostream& out, const Record& r) {
   print(out, r.dt_nasc, sizeof(r.dt_nasc));
   print(out, r.sexo, sizeof(r.sexo));
   print(out, r.nome, sizeof(r.nome));
-  return out << r.salary << std::endl;
+  return out << r.salario << std::endl;
 }
 
 size_t Record::csvcpy(char* dst, const char* src, size_t start, size_t sz) {
@@ -49,4 +49,32 @@ size_t Record::csvcpy(char* dst, const char* src, size_t start, size_t sz) {
   }
   memset(dst + idx, '\0', sz - idx);
   return end;
+}
+
+char const * Record::get_cpf() {
+  return this->cpf;
+}
+
+char* Record::get_rg() {
+  return this->rg;
+}
+
+char* Record::get_email() {
+  return this->email;
+}
+
+char* Record::get_dt_nasc() {
+  return this->dt_nasc;
+}
+
+char* Record::get_sexo() {
+  return this->sexo;
+}
+
+char* Record::get_nome() {
+  return this->nome;
+}
+
+float Record::get_salario() {
+  return this->salario;
 }

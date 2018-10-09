@@ -1,21 +1,23 @@
 #include <iostream>
 #include <fstream>
 
-#include "Block.h"
+#include "Heap.h"
 
 using namespace std;
 
 int main(int argc, char** argv) {
   string line;
-  ifstream infile("data-generation/data.csv");
+  ifstream infile("data-generation/test.csv");
   getline(infile, line);
-  Block b("out.txt");
+  Heap h("out.txt");
+  // Block b("out.txt");
   if (infile.is_open()) {
     while (getline(infile, line)) {
-      const Record* r = new Record(line.c_str());
-      b.write(r);
+      // const Record* r = new Record(line.c_str());
+      // b.write(r);
+      h.ins(line.c_str());
     }
     infile.close();
   }
-  std::cout << b.write_blocks_used << " write blocks used" << std::endl;
+  //std::cout << b.write_blocks_used << " write blocks used" << std::endl;
 }

@@ -21,6 +21,21 @@
     "algorithm": "cpp",
     "fstream": "cpp",
     "locale": "cpp",
-    "ostream": "cpp"
+    "ostream": "cpp",
+    "*.tcc": "cpp",
+    "cctype": "cpp",
+    "clocale": "cpp",
+    "cstdint": "cpp",
+    "cstdio": "cpp",
+    "cstdlib": "cpp",
+    "cstring": "cpp",
+    "cwchar": "cpp",
+    "cwctype": "cpp",
+    "iostream": "cpp",
+    "istream": "cpp",
+    "limits": "cpp",
+    "streambuf": "cpp",
+    "system_error": "cpp",
+    "cinttypes": "cpp"
   }
 }
