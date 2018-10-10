@@ -14,17 +14,36 @@ std::ostream& print(std::ostream& out, const char* str, size_t sz) {
 }
 
 Record::Record(const char* string) {
-  int8_t idx = 0;
+  int idx = 0;
+  // std::cout << "cpf\t"; 
   memcpy(this->cpf, string, sizeof(this->cpf));
+  // print(std::cout, this->cpf, sizeof(this->cpf));
+  // std::cout << std::endl;
   idx += sizeof(this->cpf) + 1;
+  // std::cout << "rg\t";
   memcpy(this->rg, string + idx, sizeof(this->rg));
+  // print(std::cout, this->rg, sizeof(this->rg));
+  // std::cout << std::endl;
   idx += sizeof(this->rg) + 1;
+  // std::cout << "email\t";
   idx = this->csvcpy(this->email, string, idx, sizeof(this->email)) + 1;
+  // print(std::cout, this->email, sizeof(this->email));
+  // std::cout << std::endl;
+  // std::cout << "dt_nasc\t";
   memcpy(this->dt_nasc, string + idx, sizeof(this->dt_nasc));
+  // print(std::cout, this->dt_nasc, sizeof(this->dt_nasc));
+  // std::cout << std::endl;
   idx += sizeof(this->dt_nasc) + 1;
+  // std::cout << "sexo\t";
   idx = this->csvcpy(this->sexo, string, idx, sizeof(this->sexo)) + 1;
+  // print(std::cout, this->sexo, sizeof(this->sexo));
+  // std::cout << std::endl;
+  // std::cout << "nome\t";
   idx = this->csvcpy(this->nome, string, idx, sizeof(this->nome)) + 1;
+  // print(std::cout, this->nome, sizeof(this->nome));
+  // std::cout << std::endl;
   this->salario = std::stof(string + idx);
+  // std::cout << "salario\t" << this->salario << std::endl;
 }
 
 std::ostream& operator<<(std::ostream& out, const Record& r) {
@@ -39,42 +58,16 @@ std::ostream& operator<<(std::ostream& out, const Record& r) {
 
 size_t Record::csvcpy(char* dst, const char* src, size_t start, size_t sz) {
   size_t end = start;
-  size_t idx;
+  size_t idx = -1;
   for (; end < start + sz; end++) {
+    // std::cout << end << "/" << src[end] << std::endl;
     if (src[end] == ';') {
       idx = end - start;
       memcpy(dst, src + start, idx);
       break;
     }
   }
-  memset(dst + idx, '\0', sz - idx);
+  if (idx == -1) memcpy(dst, src + start, end - start);
+  else memset(dst + idx, 0x00, sz - idx);
   return end;
-}
-
-char const * Record::get_cpf() {
-  return this->cpf;
-}
-
-char* Record::get_rg() {
-  return this->rg;
-}
-
-char* Record::get_email() {
-  return this->email;
-}
-
-char* Record::get_dt_nasc() {
-  return this->dt_nasc;
-}
-
-char* Record::get_sexo() {
-  return this->sexo;
-}
-
-char* Record::get_nome() {
-  return this->nome;
-}
-
-float Record::get_salario() {
-  return this->salario;
 }

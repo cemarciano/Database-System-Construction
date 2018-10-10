@@ -3,13 +3,13 @@
 #include <fstream>
 #include <stdint.h>
 
-typedef uint32_t u_int32_t;
+typedef uint32_t uint32_t;
 
 class Block {
 private:
   std::fstream    file;
   const Record**  records;
-  u_int32_t       n_r;
+  uint32_t       n_r;
 
   void persist();
   void reset();
@@ -17,13 +17,14 @@ private:
 public:
   static const int64_t MAX_SIZE = 1024;
 
-  u_int32_t blocks_used;
+  uint32_t blocks_used;
 
   Block(const char* filename, const char mode);
   ~Block();
 
   const Record* get(const int idx);
+  uint32_t count();
 
   void write(const Record* r);
-  int read(const u_int64_t pos);
+  int read(const uint64_t offset);
 };

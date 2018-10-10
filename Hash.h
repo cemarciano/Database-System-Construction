@@ -4,7 +4,7 @@ class Hash {
 private:
   Block *blockp;
   Block *blockg;
-  u_int64_t pos;
+  uint64_t pos;
 public:
   Hash(const char* output);
   ~Hash();

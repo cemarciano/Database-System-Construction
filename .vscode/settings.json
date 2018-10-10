@@ -36,6 +36,8 @@
     "limits": "cpp",
     "streambuf": "cpp",
     "system_error": "cpp",
-    "cinttypes": "cpp"
+    "cinttypes": "cpp",
+    "array": "cpp",
+    "tuple": "cpp"
   }
 }

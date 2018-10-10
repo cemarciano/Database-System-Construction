@@ -13,14 +13,14 @@ Sorted::~Sorted() {
   delete this->blockg;
 }
 
-void ins(const char* record){
+void Sorted::ins(const char* record){
 
 }
 
-const Record * sel(const char* cpf){
+const Record* Sorted::sel(const char* cpf){
 
 }
 
-void del(const char* cpf){
+void Sorted::del(const char* cpf){
     
 }

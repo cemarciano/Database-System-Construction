@@ -19,16 +19,26 @@ void Heap::ins(const char* string) {
 }
 
 const Record* Heap::sel(const char* cpf) {
-  // this->pos = 0;
-  // const Record* record;
-  // while (this->blockg->read(this->pos) > 0) {
-  //   for(int i = 0; i < Block::MAX_SIZE / sizeof(Record); i += sizeof(Record)) {
-  //     record = this->blockg->get(i);
-  //     if(!strcmp(record->get_cpf(), cpf)) return record;
-  //   }
-  //   this->pos += Block::MAX_SIZE;
-  // }
-  // return nullptr;
+  this->pos = this->blockg->read(0);
+  const Record* record;
+  do {
+    for(int i = 0; i < this->blockg->count(); i++) {
+      record = this->blockg->get(i);
+      bool found = 1;
+      for (int j = 0; j < sizeof(record->cpf); j++) {
+        if (record->cpf[j] != cpf[j]) {
+          found = 0;
+          break;
+        }
+      }
+      if (found) {
+        std::cout << "Found record " << *record << std::endl;
+        return record;
+      }
+    }
+  } while ((this->pos = this->blockg->read(this->pos)) > 0);
+  std::cout << "No record with CPF = " << cpf << std::endl;
+  return nullptr;
 }
 
 void Heap::del(const char* cpf) {

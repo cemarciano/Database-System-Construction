@@ -25,6 +25,10 @@ const Record* Block::get(const int idx) {
   return this->records[idx];
 }
 
+uint32_t Block::count() {
+  return this->n_r;
+}
+
 void Block::write(const Record* r) {
   if (sizeof(Record) * (this->n_r + 1) > Block::MAX_SIZE) { // If block is full
     this->persist();                                        // Persists block in disk
@@ -33,24 +37,33 @@ void Block::write(const Record* r) {
   this->n_r++;                                              // Increment number of records
 }
 
-int Block::read(const u_int64_t pos) {
+int Block::read(const uint64_t pos) {
+  this->blocks_used++;
+  // std::cout << "Pos = " << pos << std::endl;
   this->reset();
   this->file.seekg(pos);
   std::string line;
-  for (u_int32_t i = 0; i < (Block::MAX_SIZE / sizeof(Record)); i++) {
-    if (!getline(this->file, line)) {
+  // std::cout << "for i to " << (Block::MAX_SIZE / sizeof(Record)) << std::endl;
+  for (uint32_t i = 0; i < (Block::MAX_SIZE / sizeof(Record)); i++) {
+    // std::cout << "i = " << i << std::endl;
+    // std::getline(this->file, line, '5');
+    // std::cout << "line = " << line.c_str() << std::endl;
+    if (!std::getline(this->file, line)) {
+      // std::cout << "error" << std::endl;
       if (this->file.eof()) return 0;
       else return -1;
     }
     Record* record = new Record(line.c_str());
+    // std::cout << "record = " << *record << std::endl;
     this->records[i] = record;
+    this->n_r++;
   }
-  return this->file.peek();
+  return this->file.tellg();
 }
 
 void Block::persist() {
   this->blocks_used++;                        // Increment number of write blocks used
-  for (u_int32_t i = 0; i < this->n_r; i++) { // For each record
+  for (uint32_t i = 0; i < this->n_r; i++) { // For each record
     this->file << *(this->records[i]);        // Write this in disk
     delete this->records[i];                  // Delete the block's record
     this->records[i] = nullptr;               // Set block's record pointer to null

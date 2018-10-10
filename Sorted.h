@@ -4,7 +4,7 @@ class Sorted {
 private:
   Block *blockp;
   Block *blockg;
-  u_int64_t pos;
+  uint64_t pos;
 public:
   Sorted(const char* output);
   ~Sorted();
