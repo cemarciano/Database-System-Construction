@@ -7,24 +7,24 @@ typedef uint32_t uint32_t;
 
 class Block {
 private:
-  std::fstream    file;
-  const Record**  records;
-  uint32_t       n_r;
+  std::fstream    file;                         // Disk file
+const Record**  records;                        // List of this->records
+uint32_t       n_r;                             // Number of this->records
 
-  void persist();
-  void reset();
+  void persist();                               // Write this in disk file and reset this
+  void reset();                                 // Empty this
 
 public:
-  static const int64_t MAX_SIZE = 1024;
+  static const int64_t MAX_SIZE = 1024;         // Size of block
 
-  uint32_t blocks_used;
+  uint32_t blocks_used;                         // ???
 
-  Block(const char* filename, const char mode);
-  ~Block();
+  Block(const char* filename, const char mode); // Block constructor
+  ~Block();                                     // Block destructor
 
-  const Record* get(const int idx);
-  uint32_t count();
+  const Record* get(const int idx);             // Return ptr to idx record
+  uint32_t count();                             // ???
 
-  void write(const Record* r);
-  int read(const uint64_t offset);
+  void write(const Record* r);                  // Write Record r in this
+  int read(const uint64_t offset);              // ???
 };
