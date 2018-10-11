@@ -3,8 +3,10 @@
 #include <iostream>
 #include <cstring>
 
-std::ostream& print(std::ostream& out, const char* str, size_t sz) {
-  for (size_t i = 0; i < sz; i++) {
+std::ostream &print(std::ostream &out, const char *str, size_t sz)
+{
+  for (size_t i = 0; i < sz; i++)
+  {
     out << str[i];
     // printf("%c", str[i]);
   }
@@ -13,9 +15,10 @@ std::ostream& print(std::ostream& out, const char* str, size_t sz) {
   // printf("\n");
 }
 
-Record::Record(const char* string) {
+Record::Record(const char *string)
+{
   int idx = 0;
-  // std::cout << "cpf\t"; 
+  // std::cout << "cpf\t";
   memcpy(this->cpf, string, sizeof(this->cpf));
   // print(std::cout, this->cpf, sizeof(this->cpf));
   // std::cout << std::endl;
@@ -46,7 +49,8 @@ Record::Record(const char* string) {
   // std::cout << "salario\t" << this->salario << std::endl;
 }
 
-std::ostream& operator<<(std::ostream& out, const Record& r) {
+std::ostream &operator<<(std::ostream &out, const Record &r)
+{
   print(out, r.cpf, sizeof(r.cpf));
   print(out, r.rg, sizeof(r.rg));
   print(out, r.email, sizeof(r.email));
@@ -56,18 +60,23 @@ std::ostream& operator<<(std::ostream& out, const Record& r) {
   return out << r.salario << std::endl;
 }
 
-size_t Record::csvcpy(char* dst, const char* src, size_t start, size_t sz) {
+size_t Record::csvcpy(char *dst, const char *src, size_t start, size_t sz)
+{
   size_t end = start;
   size_t idx = -1;
-  for (; end < start + sz; end++) {
+  for (; end < start + sz; end++)
+  {
     // std::cout << end << "/" << src[end] << std::endl;
-    if (src[end] == ';') {
+    if (src[end] == ';')
+    {
       idx = end - start;
       memcpy(dst, src + start, idx);
       break;
     }
   }
-  if (idx == -1) memcpy(dst, src + start, end - start);
-  else memset(dst + idx, 0x00, sz - idx);
+  if (idx == -1)
+    memcpy(dst, src + start, end - start);
+  else
+    memset(dst + idx, 0x00, sz - idx);
   return end;
 }
