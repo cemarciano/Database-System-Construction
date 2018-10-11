@@ -21,7 +21,8 @@ void Sorted::ins(const char *record)
 
 const Record *Sorted::sel(const char *cpf)
 {
-  int64_t start = 0, end = blockg.blocks_used * Block::MAX_SIZE; // TO CORRECT
+  int64_t start = 0;
+  int64_t end = this->blockg->blocks_used * Block::MAX_SIZE;
   const Record *record;
   do
   {
