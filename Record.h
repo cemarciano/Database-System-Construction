@@ -11,6 +11,7 @@ public:
 
   Record(const char string[]);
   bool cpfcmp(const char *cpf) const;
+  // bool cpfinrange(const char *cpf1, const char *cpf2) const;  TO DO
 
   friend std::ostream &operator<<(std::ostream &out, const Record &r);
   bool operator<(const Record &r) const;

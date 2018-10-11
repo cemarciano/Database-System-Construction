@@ -15,7 +15,8 @@ Heap::~Heap()
   delete this->blockg; // Delete reading block
 }
 
-void Heap::flush() {
+void Heap::flush()
+{
   this->blockp->persist();
 }
 
@@ -70,13 +71,14 @@ const Record **Heap::selMultiple(const char **cpfs, const int quant)
       {
         if (record->cpfcmp(cpfs[j]))
         {
-          newFoundRecords=(const Record**) malloc((found+1)*sizeof(Record)); //adds new record to found records
-          for (int k = 0; k < found; k++){
+          newFoundRecords = (const Record **)malloc((found + 1) * sizeof(Record)); //adds new record to found records
+          for (int k = 0; k < found; k++)
+          {
             newFoundRecords[k] = foundRecords[k];
           }
           newFoundRecords[found] = record;
           foundRecords = newFoundRecords;
-          found ++;
+          found++;
           break;
         }
       }
@@ -105,18 +107,18 @@ const Record **Heap::selRange(const char *cpfBegin, const char *cpfEnd)
       record = this->blockg->get(i);
       for (int j = 0; j < sizeof(record->cpf); j++)
       {
-        if (strcmp(record->cpf, cpfBegin) > 0 && strcmp(record->cpf, cpfEnd) < 0)
-        {
-          /* TO CORRECT */
-          // newFoundRecords=(const Record**) malloc((found+1)*sizeof(Record)); //adds new record to found records
-          // for (int k = 0; k < found; k++){
-          //   newFoundRecords[k]=&foundRecords[k];
-          // }
-          // newFoundRecords[found]=&record;
-          // record=newFoundRecords;
-          // found ++;
-          // break;
-        }
+        // if (record->cpfinrange(cpfBegin, cpfEnd))
+        // {
+        //   newFoundRecords = (const Record **)malloc((found + 1) * sizeof(Record)); //adds new record to found records
+        //   for (int k = 0; k < found; k++)
+        //   {
+        //     newFoundRecords[k] = foundRecords[k];
+        //   }
+        //   newFoundRecords[found] = record;
+        //   foundRecords = newFoundRecords;
+        //   found++;
+        //   break;
+        // }
       }
     }
   } while ((this->pos = this->blockg->read(this->pos)) > 0);

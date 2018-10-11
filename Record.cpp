@@ -60,11 +60,13 @@ std::ostream &operator<<(std::ostream &out, const Record &r)
   return out << r.salario << std::endl;
 }
 
-bool Record::operator<(const Record& r) const
+bool Record::operator<(const Record &r) const
 {
   // std::cout << this->cpf << " " << r.cpf << std::endl;
-  for (int i = 0; i < sizeof(this->cpf); i++) {
-    if (this->cpf[i] < r.cpf[i]) {
+  for (int i = 0; i < sizeof(this->cpf); i++)
+  {
+    if (this->cpf[i] < r.cpf[i])
+    {
       return true;
     }
   }
@@ -104,3 +106,13 @@ bool Record::cpfcmp(const char *cpf) const
   }
   return true;
 }
+// TO DO
+// bool Record::cpfinrange(const char *cpfBegin, const char *cpfEnd) const
+// {
+//   if ((atoi(this->cpf) > atoi(cpfBegin)) && (atoi(this->cpf) < atoi(cpfEnd)))
+//   {
+//     std::cout << this->cpf << std::endl;
+//     return true;
+//   }
+//   return false;
+// }
