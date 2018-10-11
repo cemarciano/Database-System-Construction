@@ -60,6 +60,18 @@ std::ostream &operator<<(std::ostream &out, const Record &r)
   return out << r.salario << std::endl;
 }
 
+bool Record::operator<(const Record& r) const
+{
+  // std::cout << this->cpf << " " << r.cpf << std::endl;
+  for (int i = 0; i < sizeof(this->cpf); i++) {
+    if (this->cpf[i] < r.cpf[i]) {
+      return true;
+    }
+  }
+  return false;
+  // return (this->cpf < r.cpf);
+}
+
 size_t Record::csvcpy(char *dst, const char *src, size_t start, size_t sz)
 {
   size_t end = start;

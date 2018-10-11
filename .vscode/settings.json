@@ -38,6 +38,7 @@
     "system_error": "cpp",
     "cinttypes": "cpp",
     "array": "cpp",
-    "tuple": "cpp"
+    "tuple": "cpp",
+    "list": "cpp"
   }
 }

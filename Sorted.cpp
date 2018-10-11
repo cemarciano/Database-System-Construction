@@ -2,11 +2,15 @@
 
 #include <iostream>
 #include <cstring>
+#include <list>
 
 Sorted::Sorted(const char *output)
 {
+  this->output = output;
   this->blockp = new Block(output, 'w');
   this->blockg = new Block(output, 'r');
+  this->sort();
+  this->sorted = true;
 }
 
 Sorted::~Sorted()
@@ -15,12 +19,19 @@ Sorted::~Sorted()
   delete this->blockg;
 }
 
-void Sorted::ins(const char *record)
+void Sorted::ins(const char *string)
 {
+  const Record *record = new Record(string); // Initialize record to be inserted
+  this->blockp->write(record);               // Write record in writing block
+  this->sorted = false;
 }
 
 const Record *Sorted::sel(const char *cpf)
 {
+  if (!this->sorted) {
+    this->sort();
+    this->sorted = true;
+  }
   int64_t start = 0;
   int64_t end = this->blockg->blocks_used * Block::MAX_SIZE;
   const Record *record;
@@ -110,4 +121,22 @@ const Record *Sorted::sel(const char *cpf)
 
 void Sorted::del(const char *cpf)
 {
+}
+
+void Sorted::sort() {
+  std::string line;
+  std::ifstream outputFile(this->output, std::ios_base::in);
+  std::list<Record> records;
+  if (outputFile.is_open()) {
+    while (std::getline(outputFile, line)){
+      Record r(line.c_str());
+      records.push_back(r);
+    }
+    outputFile.close();
+  }
+  records.sort();
+  std::ofstream sortedOutputFile(this->output, std::ios_base::out);
+  for (std::list<Record>::iterator it = records.begin(); it != records.end(); it++) {
+    sortedOutputFile << *it;
+  }
 }

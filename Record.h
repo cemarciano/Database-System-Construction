@@ -12,4 +12,5 @@ public:
   Record(const char string[]);
 
   friend std::ostream &operator<<(std::ostream &out, const Record &r);
+  bool operator<(const Record &r) const;
 };
