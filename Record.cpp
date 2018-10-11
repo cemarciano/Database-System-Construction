@@ -92,3 +92,15 @@ size_t Record::csvcpy(char *dst, const char *src, size_t start, size_t sz)
     memset(dst + idx, 0x00, sz - idx);
   return end;
 }
+
+bool Record::cpfcmp(const char *cpf) const
+{
+  for (int j = 0; j < 11; j++)
+  {
+    if (this->cpf[j] != cpf[j])
+    {
+      return false;
+    }
+  }
+  return true;
+}

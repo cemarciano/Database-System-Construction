@@ -10,6 +10,7 @@ public:
   float salario;
 
   Record(const char string[]);
+  bool cpfcmp(const char *cpf) const;
 
   friend std::ostream &operator<<(std::ostream &out, const Record &r);
   bool operator<(const Record &r) const;
