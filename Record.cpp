@@ -106,13 +106,16 @@ bool Record::cpfcmp(const char *cpf) const
   }
   return true;
 }
-// TO DO
-// bool Record::cpfinrange(const char *cpfBegin, const char *cpfEnd) const
-// {
-//   if ((atoi(this->cpf) > atoi(cpfBegin)) && (atoi(this->cpf) < atoi(cpfEnd)))
-//   {
-//     std::cout << this->cpf << std::endl;
-//     return true;
-//   }
-//   return false;
-// }
+
+bool Record::cpfinrange(const char *cpfBegin, const char *cpfEnd) const
+{
+  char cpf[12];
+  memcpy(cpf,this->cpf,11);
+  cpf[11]='\0';
+  std::cout<<cpf<<std::endl<<cpfBegin<<std::endl;
+  if (strcmp(cpf,cpfBegin)>0 && strcmp(cpf,cpfEnd)<0)
+  {
+    return true;
+  }
+  return false;
+}

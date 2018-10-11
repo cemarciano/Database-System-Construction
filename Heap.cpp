@@ -107,18 +107,18 @@ const Record **Heap::selRange(const char *cpfBegin, const char *cpfEnd)
       record = this->blockg->get(i);
       for (int j = 0; j < sizeof(record->cpf); j++)
       {
-        // if (record->cpfinrange(cpfBegin, cpfEnd))
-        // {
-        //   newFoundRecords = (const Record **)malloc((found + 1) * sizeof(Record)); //adds new record to found records
-        //   for (int k = 0; k < found; k++)
-        //   {
-        //     newFoundRecords[k] = foundRecords[k];
-        //   }
-        //   newFoundRecords[found] = record;
-        //   foundRecords = newFoundRecords;
-        //   found++;
-        //   break;
-        // }
+        if (record->cpfinrange(cpfBegin, cpfEnd))
+        {
+          newFoundRecords = (const Record **)malloc((found + 1) * sizeof(Record)); //adds new record to found records
+          for (int k = 0; k < found; k++)
+          {
+            newFoundRecords[k] = foundRecords[k];
+          }
+          newFoundRecords[found] = record;
+          foundRecords = newFoundRecords;
+          found++;
+          break;
+        }
       }
     }
   } while ((this->pos = this->blockg->read(this->pos)) > 0);

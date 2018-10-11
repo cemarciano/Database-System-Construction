@@ -56,22 +56,22 @@ void selectMultipleHeap()
 /* Test select range records using heap */
 void selectRangeHeap()
 {
-  // Heap h("out.txt");
-  // const char *cpfBegin = "11111111111";
-  // const char *cpfEnd = "22222222222";
-  // const Record **records = h.selRange(cpfBegin, cpfEnd);
-  // for (int i = 0; i < sizeof(records); i++)
-  // {
-  //   std::cout << "Registro " << i << ": " << records[i][0] << endl;
-  // }
-  // std::cout << h.blockg->blocks_used << " read blocks used" << std::endl;
-  // std::cout << h.blockp->blocks_used << " write blocks used" << std::endl;
+  Heap h("out.txt");
+  const char *cpfBegin = "11111111111";
+  const char *cpfEnd = "33333333333";
+  const Record **records = h.selRange(cpfBegin, cpfEnd);
+  for (int i = 0; i < sizeof(records); i++)
+  {
+    std::cout << "Registro " << i << ": " << records[i][0] << endl;
+  }
+  std::cout << h.blockg->blocks_used << " read blocks used" << std::endl;
+  std::cout << h.blockp->blocks_used << " write blocks used" << std::endl;
 }
 
 int main(int argc, char **argv)
 {
-  // insertHeap();
+  insertHeap();
   // selectHeap(argv[1]);
   // selectMultipleHeap();
-  // selectRangeHeap();
+  selectRangeHeap();
 }
