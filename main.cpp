@@ -5,6 +5,7 @@
 
 using namespace std;
 
+/* Insert records from csv in disk using heap */
 void insertHeap()
 {
   string line;
@@ -24,6 +25,7 @@ void insertHeap()
   std::cout << h.blockp->blocks_used << " write blocks used" << std::endl;
 }
 
+/* Test select a record using heap */
 void selectHeap(const char *cpf)
 {
   // const char* cpf = "70009764623";
@@ -33,8 +35,25 @@ void selectHeap(const char *cpf)
   std::cout << h.blockp->blocks_used << " write blocks used" << std::endl;
 }
 
+/* Test select multiple records using heap */
+void selectMultipleHeap()
+{
+  Heap h("out.txt");
+  const char **cpfs = (const char **)malloc(22);
+  cpfs[0] = "11111111111";
+  cpfs[1] = "22222222222";
+  const Record **records = h.selMultiple(cpfs, 2);
+  for (int i = 0; i < 2; i++)
+  {
+    std::cout << "Registro " << i << ": " << records[i][0] << endl;
+  }
+  std::cout << h.blockg->blocks_used << " read blocks used" << std::endl;
+  std::cout << h.blockp->blocks_used << " write blocks used" << std::endl;
+}
+
 int main(int argc, char **argv)
 {
-  insertHeap();
+  // insertHeap();
   // selectHeap(argv[1]);
+  // selectMultipleHeap();
 }

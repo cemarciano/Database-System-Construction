@@ -68,17 +68,16 @@ const Record **Heap::selMultiple(const char **cpfs, const int quant)
       record = this->blockg->get(i);
       for (int j = 0; j < quant; j++)
       {
-        if (!strcmp(record->cpf, cpfs[j]))
+        if (record->cpfcmp(cpfs[j]))
         {
-          /* TO CORRECT */
-          // newFoundRecords=(const Record**) malloc((found+1)*sizeof(Record)); //adds new record to found records
-          // for (int k = 0; k < found; k++){
-          //   newFoundRecords[k]=&foundRecords[k];
-          // }
-          // newFoundRecords[found]=&record;
-          // record=newFoundRecords;
-          // found ++;
-          // break;
+          newFoundRecords=(const Record**) malloc((found+1)*sizeof(Record)); //adds new record to found records
+          for (int k = 0; k < found; k++){
+            newFoundRecords[k] = foundRecords[k];
+          }
+          newFoundRecords[found] = record;
+          foundRecords = newFoundRecords;
+          found ++;
+          break;
         }
       }
       if (found == quant)
