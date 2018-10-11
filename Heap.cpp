@@ -15,6 +15,10 @@ Heap::~Heap()
   delete this->blockg; // Delete reading block
 }
 
+void Heap::flush() {
+  this->blockp->persist();
+}
+
 void Heap::ins(const char *string)
 {
   const Record *record = new Record(string); // Initialize record to be inserted
@@ -123,5 +127,5 @@ const Record **Heap::selRange(const char *cpfBegin, const char *cpfEnd)
 void Heap::del(const char *cpf)
 {
   Heap::sel(cpf);
-  this->blockp;
+  // this->blockp;
 }

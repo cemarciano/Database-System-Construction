@@ -80,12 +80,12 @@ void Block::persist()
   this->blocks_used++; // Increment number of write blocks used
   for (uint32_t i = 0; i < this->n_r; i++)
   {                                    // For each record
-    this->file << *(this->records[i]); // Write this in disk
+    this->file << *(this->records[i]);  // Write this in disk
     delete this->records[i];           // Delete the block's record
     this->records[i] = nullptr;        // Set block's record pointer to null
   }
   this->file.flush(); // Reload file with new records
-  this->reset();      // Reset block
+  this->reset();    // Reset block
 }
 
 void Block::reset()

@@ -12,7 +12,6 @@ private:
   const Record **records; // List of this->records
   uint32_t n_r;           // Number of this->records
 
-  void persist(); // Write this in disk file and reset this
   void reset();   // Empty this
 
 public:
@@ -28,4 +27,5 @@ public:
 
   void write(const Record *r);     // Write Record r in this
   int read(const uint64_t offset); // Populate the block with N records starting from offset
+  void persist(); // Write this in disk file and reset this
 };

@@ -12,6 +12,8 @@ public:
   Heap(const char *output);
   ~Heap();
 
+  void flush();
+
   void ins(const char *record);
   const Record *sel(const char *cpf);
   const Record **selMultiple(const char **cpfs, const int quant);
