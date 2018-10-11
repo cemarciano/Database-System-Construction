@@ -12,7 +12,7 @@ Block::Block(const char* filename, const char mode) {
   } else {                                          // If mode read
     this->file.open(filename, std::ios_base::in);   // Open file in input mode
   }
-  this->blocks_used = 0;                      // Set blocks_used to 0
+  this->blocks_used = 0;                            // Set blocks_used to 0
 }
 
 Block::~Block() {
@@ -26,7 +26,7 @@ const Record* Block::get(const int idx) {
 }
 
 uint32_t Block::count() {
-  return this->n_r;
+  return this->n_r; // Return number of records in this
 }
 
 void Block::write(const Record* r) {
@@ -41,7 +41,7 @@ int Block::read(const uint64_t pos) {
   this->blocks_used++;
   // std::cout << "Pos = " << pos << std::endl;
   this->reset();
-  this->file.seekg(pos);
+  this->file.seekg(pos);  
   std::string line;
   // std::cout << "for i to " << (Block::MAX_SIZE / sizeof(Record)) << std::endl;
   for (uint32_t i = 0; i < (Block::MAX_SIZE / sizeof(Record)); i++) {
@@ -68,7 +68,7 @@ void Block::persist() {
     delete this->records[i];                  // Delete the block's record
     this->records[i] = nullptr;               // Set block's record pointer to null
   }
-  this->file.flush();                         //
+  this->file.flush();                         // Reload file with new records
   this->reset();                              // Reset block
 }
 
