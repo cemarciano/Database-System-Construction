@@ -14,6 +14,6 @@ public:
   Hash(const std::string output);
   ~Hash();
   void ins(const char *record);
-  const Record *sel(const char *cpf);
+  const Record *sel(const char *cpf, bool toDelete=false);
   void del(const char *cpf);
 };

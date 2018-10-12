@@ -29,7 +29,7 @@ void Sorted::ins(const char *string)
   this->sorted = false;
 }
 
-const Record *Sorted::sel(const char *cpf)
+const Record *Sorted::sel(const char *cpf, bool toDelete)
 {
   if (!this->sorted) {
     this->sort();
@@ -60,7 +60,16 @@ const Record *Sorted::sel(const char *cpf)
     }
     if (found)
     {
-      std::cout << "Found record " << *record << std::endl;
+      if (toDelete){
+        // Replace the current register with 000's:
+        this->blockg->nullify(0, this->pos);
+        std::cout << "Deleted";
+      }
+      else{
+        std::cout<<"Found";
+      }
+      // Finishes printing:
+      std::cout << " record " << *record << " in block position " << 0 << std::endl;
       return record;
     }
     else
@@ -89,7 +98,16 @@ const Record *Sorted::sel(const char *cpf)
     }
     if (found)
     {
-      std::cout << "Found record " << *record << std::endl;
+      if (toDelete){
+        // Replace the current register with 000's:
+        this->blockg->nullify(this->blockg->count() - 1, this->pos);
+        std::cout << "Deleted";
+      }
+      else{
+        std::cout<<"Found";
+      }
+      // Finishes printing:
+      std::cout << " record " << *record << " in block position " << this->blockg->count() - 1 << std::endl;
       return record;
     }
     else
@@ -113,8 +131,17 @@ const Record *Sorted::sel(const char *cpf)
       }
       if (found)
       {
-        std::cout << "Found record " << *record << std::endl;
-        return record;
+      if (toDelete){
+        // Replace the current register with 000's:
+        this->blockg->nullify(i, this->pos);
+        std::cout << "Deleted";
+      }
+      else{
+        std::cout<<"Found";
+      }
+      // Finishes printing:
+      std::cout << " record " << *record << " in block position " << i << std::endl;
+      return record;
       }
     }
   } while ((start + end) / 2 != this->pos);
@@ -124,6 +151,8 @@ const Record *Sorted::sel(const char *cpf)
 
 void Sorted::del(const char *cpf)
 {
+  // Seek and destroy:
+  Sorted::sel(cpf, true);
 }
 
 void Sorted::sort() {

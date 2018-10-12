@@ -23,7 +23,7 @@ void Hash::ins(const char *record)
 {
 }
 
-const Record *Hash::sel(const char *cpf)
+const Record *Hash::sel(const char *cpf, bool toDelete)
 {
   std::hash<std::string> hashFunction;
   std::string cpfString(cpf);
@@ -43,7 +43,16 @@ const Record *Hash::sel(const char *cpf)
     }
     if (found)
     {
-      std::cout << "Found record " << *record << std::endl;
+      if (toDelete){
+        // Replace the current register with 000's:
+        this->blockg->nullify(i, this->pos);
+        std::cout << "Deleted";
+      }
+      else{
+        std::cout<<"Found";
+      }
+      // Finishes printing:
+      std::cout << " record " << *record << " in block position " << i << std::endl;
       return record;
     }
   }
@@ -53,4 +62,6 @@ const Record *Hash::sel(const char *cpf)
 
 void Hash::del(const char *cpf)
 {
+  // Seek and destroy:
+  Hash::sel(cpf, true);
 }

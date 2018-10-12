@@ -17,7 +17,7 @@ public:
   ~Sorted();
 
   void ins(const char *string);
-  const Record *sel(const char *cpf);
+  const Record *sel(const char *cpf, bool toDelete=false);
   void del(const char *cpf);
 
   void sort();

@@ -56,7 +56,7 @@ void selectMultipleHeap()
 /* Test select range records using heap */
 void selectRangeHeap()
 {
-  Heap h("out");
+  Heap h("heap");
   const char *cpfBegin = "11111111111";
   const char *cpfEnd = "33333333333";
   const Record **records = h.selRange(cpfBegin, cpfEnd);
