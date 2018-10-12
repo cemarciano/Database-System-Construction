@@ -32,7 +32,7 @@ void Heap::ins(const char *string)
   this->header->addRecord();
 }
 
-const Record *Heap::sel(const char *cpf)
+const Record *Heap::sel(const char *cpf, bool toDelete)
 {
   this->pos = this->blockg->read(0); // Use reading block to read the disk
   const Record *record;              // Initialize a empty record
@@ -52,7 +52,15 @@ const Record *Heap::sel(const char *cpf)
       }
       if (found)
       { // If found record with query's cpf return the record
-        std::cout << "Found record " << *record << std::endl;
+        if (toDelete){
+            // Replace the current register with 000's:
+            this->blockg->nullify(i, this->pos);
+            std::cout << "Deleted";
+        } else {
+            std::cout << "Found";
+        }
+        // Finishes printing:
+        std::cout << " record " << *record << " in block position " << i << std::endl;
         return record;
       }
     }
@@ -133,6 +141,6 @@ const Record **Heap::selRange(const char *cpfBegin, const char *cpfEnd)
 
 void Heap::del(const char *cpf)
 {
-  Heap::sel(cpf);
-  // this->blockp;
+  // Seek and destroy:
+  Heap::sel(cpf, true);
 }
