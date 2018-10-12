@@ -8,6 +8,7 @@ private:
   Block *blockg;
   Header* header;
   uint64_t pos;
+  std::hash<std::string> hashFunction;
   
 
 public:
@@ -15,5 +16,7 @@ public:
   ~Hash();
   void ins(const char *record);
   const Record *sel(const char *cpf, bool toDelete=false);
+  const Record **selMultiple(const char **cpfs, const int quant);
+  const Record **selRange(const char *cpfBegin, const char *cpfEnd);
   void del(const char *cpf);
 };
