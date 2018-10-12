@@ -4,10 +4,13 @@
 #include <cstring>
 #include <functional>
 
-Hash::Hash(const char *output)
+Hash::Hash(const std::string output)
 {
-  this->blockp = new Block(output, 'w');
-  this->blockg = new Block(output, 'r');
+  const std::string dataFilename = output + ".cbd";
+  const std::string headerFilename = output + ".cbdh";
+  this->blockp = new Block(dataFilename.c_str(), 'w'); // Initialize writing block
+  this->blockg = new Block(dataFilename.c_str(), 'r'); // Initialize reading block
+  this->header = new Header(headerFilename);
 }
 
 Hash::~Hash()

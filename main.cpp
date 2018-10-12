@@ -13,7 +13,7 @@ void insertHeap()
   string line;
   ifstream infile("data-generation/test.csv");
   getline(infile, line);
-  Heap h("out.txt");
+  Heap h("heap");
   if (infile.is_open())
   {
     while (getline(infile, line))
@@ -31,7 +31,7 @@ void insertHeap()
 void selectHeap(const char *cpf)
 {
   // const char* cpf = "70009764623";
-  Heap h("out.txt");
+  Heap h("heap");
   h.sel(cpf);
   std::cout << h.blockg->blocks_used << " read blocks used" << std::endl;
   std::cout << h.blockp->blocks_used << " write blocks used" << std::endl;
@@ -40,7 +40,7 @@ void selectHeap(const char *cpf)
 /* Test select multiple records using heap */
 void selectMultipleHeap()
 {
-  Heap h("out.txt");
+  Heap h("heap");
   const char **cpfs = (const char **)malloc(22);
   cpfs[0] = "11111111111";
   cpfs[1] = "22222222222";
@@ -56,7 +56,7 @@ void selectMultipleHeap()
 /* Test select range records using heap */
 void selectRangeHeap()
 {
-  Heap h("out.txt");
+  Heap h("out");
   const char *cpfBegin = "11111111111";
   const char *cpfEnd = "33333333333";
   const Record **records = h.selRange(cpfBegin, cpfEnd);
@@ -73,5 +73,5 @@ int main(int argc, char **argv)
   insertHeap();
   // selectHeap(argv[1]);
   // selectMultipleHeap();
-  selectRangeHeap();
+  // selectRangeHeap();
 }

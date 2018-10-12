@@ -1,4 +1,5 @@
 #include "Block.h"
+#include "Header.h"
 
 class Heap
 {
@@ -8,8 +9,9 @@ private:
 public:
   Block *blockp;
   Block *blockg;
+  Header* header;
 
-  Heap(const char *output);
+  Heap(const std::string);
   ~Heap();
 
   void flush();

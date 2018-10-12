@@ -4,11 +4,14 @@
 #include <cstring>
 #include <list>
 
-Sorted::Sorted(const char *output)
+Sorted::Sorted(const std::string output)
 {
-  this->output = output;
-  this->blockp = new Block(output, 'w');
-  this->blockg = new Block(output, 'r');
+  this->output = output.c_str();
+  const std::string dataFilename = output + ".cbd";
+  const std::string headerFilename = output + ".cbdh";
+  this->blockp = new Block(dataFilename.c_str(), 'w');
+  this->blockg = new Block(dataFilename.c_str(), 'r');
+  this->header = new Header(headerFilename);
   this->sort();
   this->sorted = true;
 }

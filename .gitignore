@@ -142,6 +142,7 @@ Temporary Items
 !.vscode/extensions.json
 
 *.cbd
+*.cbdh
 *.txt
 
 main

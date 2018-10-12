@@ -1,4 +1,5 @@
 #include "Block.h"
+#include "Header.h"
 
 class Sorted
 {
@@ -10,8 +11,9 @@ private:
 public:
   Block *blockp;
   Block *blockg;
+  Header* header;
 
-  Sorted(const char *output);
+  Sorted(const std::string output);
   ~Sorted();
 
   void ins(const char *string);

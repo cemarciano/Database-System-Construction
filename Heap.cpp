@@ -3,27 +3,33 @@
 #include <iostream>
 #include <cstring>
 
-Heap::Heap(const char *output)
+Heap::Heap(const std::string output)
 {
-  this->blockp = new Block(output, 'w'); // Initialize writing block
-  this->blockg = new Block(output, 'r'); // Initialize reading block
+  const std::string dataFilename = output + ".cbd";
+  const std::string headerFilename = output + ".cbdh";
+  this->blockp = new Block(dataFilename.c_str(), 'w'); // Initialize writing block
+  this->blockg = new Block(dataFilename.c_str(), 'r'); // Initialize reading block
+  this->header = new Header(headerFilename);
 }
 
 Heap::~Heap()
 {
   delete this->blockp; // Delete writing block
   delete this->blockg; // Delete reading block
+  delete this->header;
 }
 
 void Heap::flush()
 {
   this->blockp->persist();
+  this->header->write();
 }
 
 void Heap::ins(const char *string)
 {
   const Record *record = new Record(string); // Initialize record to be inserted
   this->blockp->write(record);               // Write record in writing block
+  this->header->addRecord();
 }
 
 const Record *Heap::sel(const char *cpf)
