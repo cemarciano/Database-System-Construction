@@ -68,10 +68,20 @@ void selectRangeHeap()
   std::cout << h.blockp->blocks_used << " write blocks used" << std::endl;
 }
 
+/* Test select a record using heap */
+void deleteHeap(const char *cpf)
+{
+  // const char* cpf = "70009764623";
+  Heap h("out.txt");
+  h.del(cpf);
+  std::cout << h.blockg->blocks_used << " read blocks used" << std::endl;
+  std::cout << h.blockp->blocks_used << " write blocks used" << std::endl;
+}
+
 int main(int argc, char **argv)
 {
-  insertHeap();
-  // selectHeap(argv[1]);
+  // insertHeap();
+  deleteHeap(argv[1]);
   // selectMultipleHeap();
-  selectRangeHeap();
+  // selectRangeHeap();
 }

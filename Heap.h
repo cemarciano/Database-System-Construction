@@ -15,7 +15,7 @@ public:
   void flush();
 
   void ins(const char *record);
-  const Record *sel(const char *cpf);
+  const Record *sel(const char *cpf, bool toDelete=false);
   const Record **selMultiple(const char **cpfs, const int quant);
   const Record **selRange(const char *cpfBegin, const char *cpfEnd);
   void del(const char *cpf);
