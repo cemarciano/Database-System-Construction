@@ -3,10 +3,12 @@
 #include <iostream>
 #include <cstring>
 
-Heap::Heap(const std::string output)
+#define HEAP_DISK "Heap.cbd"
+
+Heap::Heap()
 {
-  const std::string dataFilename = output + ".cbd";
-  const std::string headerFilename = output + ".cbdh";
+  const std::string dataFilename = HEAP_DISK;
+  const std::string headerFilename = HEAP_DISK "h";
   this->blockp = new Block(dataFilename.c_str(), 'w'); // Initialize writing block
   this->blockg = new Block(dataFilename.c_str(), 'r'); // Initialize reading block
   this->header = new Header(headerFilename);
@@ -52,12 +54,15 @@ const Record *Heap::sel(const char *cpf, bool toDelete)
       }
       if (found)
       { // If found record with query's cpf return the record
-        if (toDelete){
-            // Replace the current register with 000's:
-            this->blockg->nullify(i, this->pos);
-            std::cout << "Deleted";
-        } else {
-            std::cout << "Found";
+        if (toDelete)
+        {
+          // Replace the current register with 000's:
+          this->blockg->nullify(i, this->pos, HEAP_DISK);
+          std::cout << "Deleted";
+        }
+        else
+        {
+          std::cout << "Found";
         }
         // Finishes printing:
         std::cout << " record " << *record << " in block position " << i << std::endl;
@@ -69,12 +74,11 @@ const Record *Heap::sel(const char *cpf, bool toDelete)
   return nullptr;
 }
 
-const Record **Heap::selMultiple(const char **cpfs, const int quant)
+std::vector<const Record *>Heap::selMultiple(const char **cpfs, const int quant)
 {
   this->pos = this->blockg->read(0);
   const Record *record;
-  const Record **foundRecords;
-  const Record **newFoundRecords;
+  std::vector<const Record *>foundRecords;
   int found = 0;
   do
   {
@@ -85,13 +89,7 @@ const Record **Heap::selMultiple(const char **cpfs, const int quant)
       {
         if (record->cpfcmp(cpfs[j]))
         {
-          newFoundRecords = (const Record **)malloc((found + 1) * sizeof(Record)); //adds new record to found records
-          for (int k = 0; k < found; k++)
-          {
-            newFoundRecords[k] = foundRecords[k];
-          }
-          newFoundRecords[found] = record;
-          foundRecords = newFoundRecords;
+          foundRecords.push_back(record);
           found++;
           break;
         }
@@ -107,12 +105,11 @@ const Record **Heap::selMultiple(const char **cpfs, const int quant)
   return foundRecords;
 }
 
-const Record **Heap::selRange(const char *cpfBegin, const char *cpfEnd)
+std::vector<const Record *>Heap::selRange(const char *cpfBegin, const char *cpfEnd)
 {
   this->pos = this->blockg->read(0);
   const Record *record;
-  const Record **foundRecords;
-  const Record **newFoundRecords;
+  std::vector<const Record *>foundRecords;
   int found = 0;
   do
   {
@@ -123,13 +120,7 @@ const Record **Heap::selRange(const char *cpfBegin, const char *cpfEnd)
       {
         if (record->cpfinrange(cpfBegin, cpfEnd))
         {
-          newFoundRecords = (const Record **)malloc((found + 1) * sizeof(Record)); //adds new record to found records
-          for (int k = 0; k < found; k++)
-          {
-            newFoundRecords[k] = foundRecords[k];
-          }
-          newFoundRecords[found] = record;
-          foundRecords = newFoundRecords;
+          foundRecords.push_back(record);
           found++;
           break;
         }

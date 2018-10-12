@@ -4,10 +4,12 @@
 #include <cstring>
 #include <functional>
 
-Hash::Hash(const std::string output)
+#define HASH_DISK "Hash.cbd"
+
+Hash::Hash()
 {
-  const std::string dataFilename = output + ".cbd";
-  const std::string headerFilename = output + ".cbdh";
+  const std::string dataFilename = HASH_DISK;
+  const std::string headerFilename = HASH_DISK"h";
   this->blockp = new Block(dataFilename.c_str(), 'w'); // Initialize writing block
   this->blockg = new Block(dataFilename.c_str(), 'r'); // Initialize reading block
   this->header = new Header(headerFilename);
@@ -45,7 +47,7 @@ const Record *Hash::sel(const char *cpf, bool toDelete)
       if (toDelete)
       {
         // Replace the current register with 000's:
-        this->blockg->nullify(i, this->pos);
+        this->blockg->nullify(i, this->pos, HASH_DISK);
         std::cout << "Deleted";
       }
       else

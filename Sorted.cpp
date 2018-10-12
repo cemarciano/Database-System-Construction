@@ -4,11 +4,12 @@
 #include <cstring>
 #include <list>
 
-Sorted::Sorted(const std::string output)
+#define SORTED_DISK "Sorted.cbd"
+
+Sorted::Sorted()
 {
-  this->output = output.c_str();
-  const std::string dataFilename = output + ".cbd";
-  const std::string headerFilename = output + ".cbdh";
+  const std::string dataFilename = SORTED_DISK;
+  const std::string headerFilename = SORTED_DISK"h";
   this->blockp = new Block(dataFilename.c_str(), 'w');
   this->blockg = new Block(dataFilename.c_str(), 'r');
   this->header = new Header(headerFilename);
@@ -21,6 +22,18 @@ Sorted::~Sorted()
   delete this->blockp;
   delete this->blockg;
 }
+
+void Sorted::flush()
+{
+  this->blockp->persist();
+  this->header->write();
+  if (this->sorted == false){
+    this->sort();
+    this->sorted = true;
+  }
+}
+
+
 
 void Sorted::ins(const char *string)
 {
@@ -62,7 +75,7 @@ const Record *Sorted::sel(const char *cpf, bool toDelete)
     {
       if (toDelete){
         // Replace the current register with 000's:
-        this->blockg->nullify(0, this->pos);
+        this->blockg->nullify(0, this->pos, SORTED_DISK);
         std::cout << "Deleted";
       }
       else{
@@ -100,7 +113,7 @@ const Record *Sorted::sel(const char *cpf, bool toDelete)
     {
       if (toDelete){
         // Replace the current register with 000's:
-        this->blockg->nullify(this->blockg->count() - 1, this->pos);
+        this->blockg->nullify(this->blockg->count() - 1, this->pos, SORTED_DISK);
         std::cout << "Deleted";
       }
       else{
@@ -133,7 +146,7 @@ const Record *Sorted::sel(const char *cpf, bool toDelete)
       {
       if (toDelete){
         // Replace the current register with 000's:
-        this->blockg->nullify(i, this->pos);
+        this->blockg->nullify(i, this->pos, SORTED_DISK);
         std::cout << "Deleted";
       }
       else{
@@ -149,40 +162,40 @@ const Record *Sorted::sel(const char *cpf, bool toDelete)
   return nullptr;
 }
 
-const Record **Sorted::selMultiple(const char **cpfs, const int quant)
+std::vector<const Record *>Sorted::selMultiple(const char **cpfs, const int quant)
 {
+  std::vector<const Record*>foundRecords;
+  for (int i = 0; i < quant; i++)
+  {
+    foundRecords.push_back(Sorted::sel(cpfs[i]));        
+  }
+  return foundRecords;
 }
 
-const Record **Sorted::selRange(const char *cpfBegin, const char *cpfEnd)
+std::vector<const Record *>Sorted::selRange(const char *cpfBegin, const char *cpfEnd)
 {
   this->pos = this->blockg->read(0);
   const Record *record;
-  const Record **foundRecords;
-  const Record **newFoundRecords;
+  std::vector<const Record*>foundRecords;
   int found = 0;
-  do
-  {
-    for (int i = 0; i < this->blockg->count(); i++)
-    {
-      record = this->blockg->get(i);
-      for (int j = 0; j < sizeof(record->cpf); j++)
-      {
-        if (record->cpfinrange(cpfBegin, cpfEnd))
-        {
-          newFoundRecords = (const Record **)malloc((found + 1) * sizeof(Record)); //adds new record to found records
-          for (int k = 0; k < found; k++)
-          {
-            newFoundRecords[k] = foundRecords[k];
-          }
-          newFoundRecords[found] = record;
-          foundRecords = newFoundRecords;
-          found++;
-          break;
-        }
-      }
-    }
-  } while ((this->pos = this->blockg->read(this->pos)) > 0);
-  return foundRecords;
+  
+  // do
+  // {
+  //   for (int i = 0; i < this->blockg->count(); i++)
+  //   {
+  //     record = this->blockg->get(i);
+  //     for (int j = 0; j < sizeof(record->cpf); j++)
+  //     {
+  //       if (record->cpfinrange(cpfBegin, cpfEnd))
+  //       {
+  //         foundRecords.push_back(record);  
+  //         found++;
+  //         break;
+  //       }
+  //     }
+  //   }
+  // } while ((this->pos = this->blockg->read(this->pos)) > 0);
+  // return foundRecords;
 }
 
 void Sorted::del(const char *cpf)
@@ -193,7 +206,7 @@ void Sorted::del(const char *cpf)
 
 void Sorted::sort() {
   std::string line;
-  std::ifstream outputFile(this->output, std::ios_base::in);
+  std::ifstream outputFile(SORTED_DISK, std::ios_base::in);
   std::list<Record> records;
   if (outputFile.is_open()) {
     while (std::getline(outputFile, line)){
@@ -203,7 +216,7 @@ void Sorted::sort() {
     outputFile.close();
   }
   records.sort();
-  std::ofstream sortedOutputFile(this->output, std::ios_base::out);
+  std::ofstream sortedOutputFile(SORTED_DISK, std::ios_base::out);
   for (std::list<Record>::iterator it = records.begin(); it != records.end(); it++) {
     sortedOutputFile << *it;
   }

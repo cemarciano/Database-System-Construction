@@ -3,85 +3,92 @@
 #include <list>
 
 #include "Heap.h"
-// #include "Sorted.h"
+#include "Sorted.h"
+#include "Hash.h"
+
+#define DATA_STRUCT Sorted
 
 using namespace std;
 
-/* Insert records from csv in disk using heap */
-void insertHeap()
+void printBlocks(DATA_STRUCT* db)
+{
+  cout << db->blockg->blocks_used << " read blocks used" << endl;
+  cout << db->blockp->blocks_used << " write blocks used" << endl;
+}
+
+void testInsert(DATA_STRUCT* db)
 {
   string line;
   ifstream infile("data-generation/test.csv");
   getline(infile, line);
-  Heap h("heap");
   if (infile.is_open())
   {
     while (getline(infile, line))
     {
-      h.ins(line.c_str());
+      db->ins(line.c_str());
     }
     infile.close();
-    h.flush();
+    db->flush();
   }
-  std::cout << h.blockg->blocks_used << " read blocks used" << std::endl;
-  std::cout << h.blockp->blocks_used << " write blocks used" << std::endl;
+  printBlocks(db);
 }
 
-/* Test select a record using heap */
-void selectHeap(const char *cpf)
+void testSelect(DATA_STRUCT* db)
 {
-  // const char* cpf = "70009764623";
-  Heap h("heap");
-  h.sel(cpf);
-  std::cout << h.blockg->blocks_used << " read blocks used" << std::endl;
-  std::cout << h.blockp->blocks_used << " write blocks used" << std::endl;
+  const char *cpf = "55555555555";
+  db->sel(cpf);
+  printBlocks(db);
 }
 
-/* Test select multiple records using heap */
-void selectMultipleHeap()
+void testSelectMultiple(DATA_STRUCT* db)
 {
-  Heap h("heap");
   const char **cpfs = (const char **)malloc(22);
   cpfs[0] = "11111111111";
-  cpfs[1] = "22222222222";
-  const Record **records = h.selMultiple(cpfs, 2);
-  for (int i = 0; i < 2; i++)
+  cpfs[1] = "55555555555";
+  const std::vector<const Record *> records = db->selMultiple(cpfs, 2);
+  for (int i = 0; i < records.size(); i++)
   {
-    std::cout << "Registro " << i << ": " << records[i][0] << endl;
+    cout << "Registro " << i << ": " << records[i][0] << endl;
   }
-  std::cout << h.blockg->blocks_used << " read blocks used" << std::endl;
-  std::cout << h.blockp->blocks_used << " write blocks used" << std::endl;
+  printBlocks(db);
 }
 
-/* Test select range records using heap */
-void selectRangeHeap()
-{
-  Heap h("heap");
-  const char *cpfBegin = "11111111111";
-  const char *cpfEnd = "33333333333";
-  const Record **records = h.selRange(cpfBegin, cpfEnd);
-  for (int i = 0; i < sizeof(records); i++)
-  {
-    std::cout << "Registro " << i << ": " << records[i][0] << endl;
-  }
-  std::cout << h.blockg->blocks_used << " read blocks used" << std::endl;
-  std::cout << h.blockp->blocks_used << " write blocks used" << std::endl;
-}
+// void testSelectRange(DATA_STRUCT *db)
+// {
+//   const char *cpfBegin = "11111111111";
+//   const char *cpfEnd = "33333333333";
+//   const std::vector<const Record *> records = db->selRange(cpfBegin, cpfEnd);
+//   for (int i = 0; i < records.size(); i++)
+//   {
+//     cout << "Registro " << i << ": " << records[i][0] << endl;
+//   }
+//   printBlocks(db);
+// }
 
-/* Test select a record using heap */
-void deleteHeap(const char *cpf)
+void testDelete(DATA_STRUCT *db)
 {
-  // const char* cpf = "70009764623";
-  Heap h("out.txt");
-  h.del(cpf);
-  std::cout << h.blockg->blocks_used << " read blocks used" << std::endl;
-  std::cout << h.blockp->blocks_used << " write blocks used" << std::endl;
+  const char *cpf = "88888888888";
+  db->del(cpf);
+  printBlocks(db);
 }
 
 int main(int argc, char **argv)
 {
-  // insertHeap();
-  deleteHeap(argv[1]);
-  // selectMultipleHeap();
-  // selectRangeHeap();
+  DATA_STRUCT db;
+
+  // Insert
+  // testInsert(&db);
+
+  // Select
+  // testSelect(&db);
+
+  // Select multiple
+  testSelectMultiple(&db);
+
+  // Select range
+  // testSelectRange(&db);
+
+  // Delete
+  // testDelete(&db);
+  
 }

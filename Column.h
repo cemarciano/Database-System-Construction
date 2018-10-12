@@ -1,4 +1,8 @@
+#ifndef COLUMN_H
+#define COLUMN_H
+
 #include <string>
+#include <iostream>
 
 class Column
 {
@@ -14,3 +18,5 @@ public:
 
   friend std::ostream &operator<<(std::ostream &out, const Column &c);
 };
+
+#endif

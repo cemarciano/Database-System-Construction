@@ -1,6 +1,5 @@
 #include "Column.h"
 
-#include <iostream>
 
 Column::Column(std::string columnName, std::string columnType, int columnSz)
 {

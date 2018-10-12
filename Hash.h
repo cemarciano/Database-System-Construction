@@ -12,7 +12,7 @@ private:
   
 
 public:
-  Hash(const std::string output);
+  Hash();
   ~Hash();
   void ins(const char *record);
   const Record *sel(const char *cpf, bool toDelete=false);

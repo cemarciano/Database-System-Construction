@@ -1,6 +1,5 @@
 #include "Schema.h"
 
-#include <iostream>
 
 Schema::Schema()
 {

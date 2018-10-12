@@ -1,7 +1,5 @@
 #include "Record.h"
 
-#include <iostream>
-#include <cstring>
 
 std::ostream &print(std::ostream &out, const char *str, size_t sz)
 {
@@ -112,7 +110,6 @@ bool Record::cpfinrange(const char *cpfBegin, const char *cpfEnd) const
   char cpf[12];
   memcpy(cpf,this->cpf,11);
   cpf[11]='\0';
-  std::cout<<cpf<<std::endl<<cpfBegin<<std::endl;
   if (strcmp(cpf,cpfBegin)>0 && strcmp(cpf,cpfEnd)<0)
   {
     return true;

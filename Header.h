@@ -1,3 +1,6 @@
+#ifndef HEADER_H
+#define HEADER_H
+
 #include <string>
 #include <fstream>
 #include <list>
@@ -24,3 +27,5 @@ public:
   void delRecord();
   void write();
 };
+
+#endif

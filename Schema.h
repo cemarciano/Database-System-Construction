@@ -1,5 +1,8 @@
-#include <list>
+#ifndef SCHEMA_H
+#define SCHEMA_H
 
+#include <list>
+#include <iostream>
 #include "Column.h"
 
 class Schema
@@ -15,3 +18,5 @@ public:
 
   void addColumn(Column column);
 };
+
+#endif

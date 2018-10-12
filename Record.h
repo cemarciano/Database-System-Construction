@@ -1,4 +1,9 @@
+#ifndef RECORD_H
+#define RECORD_H
+
 #include <string>
+#include <iostream>
+#include <cstring>
 
 class Record
 {
@@ -16,3 +21,5 @@ public:
   friend std::ostream &operator<<(std::ostream &out, const Record &r);
   bool operator<(const Record &r) const;
 };
+
+#endif

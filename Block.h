@@ -1,7 +1,10 @@
-#include "Record.h"
+#ifndef BLOCK_H
+#define BLOCK_H
 
+#include "Record.h"
 #include <fstream>
 #include <stdint.h>
+#include <iostream>
 
 typedef uint32_t uint32_t;
 
@@ -28,5 +31,7 @@ public:
   void write(const Record *r);     // Write Record r in this
   int read(const uint64_t offset); // Populate the block with N records starting from offset
   void persist(); // Write this in disk file and reset this
-  void nullify(int reg, int pos); // Replaces register in registers[reg] with a bunch of 000's. Then writes to file in pos +- offset
+  void nullify(int reg, int pos, const char* path); // Replaces register in registers[reg] with a bunch of 000's. Then writes to file in pos +- offset
 };
+
+#endif

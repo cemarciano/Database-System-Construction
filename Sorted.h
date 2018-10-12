@@ -1,11 +1,12 @@
 #include "Block.h"
 #include "Header.h"
 
+#include<vector>
+
 class Sorted
 {
 private:
   uint64_t pos;
-  const char* output;
   bool sorted;
 
 public:
@@ -13,13 +14,15 @@ public:
   Block *blockg;
   Header* header;
 
-  Sorted(const std::string output);
+  Sorted();
   ~Sorted();
+
+  void flush();
 
   void ins(const char *string);
   const Record *sel(const char *cpf, bool toDelete=false);
-  const Record **selMultiple(const char **cpfs, const int quant);
-  const Record **selRange(const char *cpfBegin, const char *cpfEnd);
+  std::vector<const Record *>selMultiple(const char **cpfs, const int quant);
+  std::vector<const Record *>selRange(const char *cpfBegin, const char *cpfEnd);
   void del(const char *cpf);
 
   void sort();
