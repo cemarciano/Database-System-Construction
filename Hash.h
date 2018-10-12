@@ -1,6 +1,8 @@
 #include "Block.h"
 #include "Header.h"
 
+#include <vector>
+
 class Hash
 {
 private:
@@ -15,8 +17,8 @@ public:
   ~Hash();
   void ins(const char *string);
   void flush();
-  const Record **selMultiple(const char **cpfs, const int quant);
-  const Record **selRange(const char *cpfBegin, const char *cpfEnd);
+  std::vector<const Record *>selMultiple(const char **cpfs, const int quant);
+  std::vector<const Record *>selRange(const char *cpfBegin, const char *cpfEnd);
   const Record *sel(const char *cpf, bool toDelete=false);
   void del(const char *cpf);
 };

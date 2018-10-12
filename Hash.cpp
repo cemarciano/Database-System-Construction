@@ -10,7 +10,7 @@ Hash::Hash()
 {
   const std::string dataFilename = HASH_DISK;
   const std::string headerFilename = HASH_DISK"h";
-  this->blockp = new Block(dataFilename.c_str(), 'w'); // Initialize writing block
+  this->blockp = new Block(dataFilename.c_str(), 'o'); // Initialize writing block
   this->blockg = new Block(dataFilename.c_str(), 'r'); // Initialize reading block
   this->header = new Header(headerFilename);
 }
@@ -77,11 +77,10 @@ const Record *Hash::sel(const char *cpf, bool toDelete)
   return nullptr;
 }
 
-const Record **Hash::selMultiple(const char **cpfs, const int quant)
+std::vector<const Record *>Hash::selMultiple(const char **cpfs, const int quant)
 {
   const Record *record;
-  const Record **foundRecords;
-  const Record **newFoundRecords;
+  std::vector<const Record *>foundRecords;
   int found = 0;
   for (int n = 0; n < quant; n++)
   {
@@ -92,13 +91,7 @@ const Record **Hash::selMultiple(const char **cpfs, const int quant)
       record = this->blockg->get(i);
       if (record->cpfcmp(cpfs[n]))
       {
-        newFoundRecords = (const Record **)malloc((found + 1) * sizeof(Record)); //adds new record to found records
-        for (int k = 0; k < found; k++)
-        {
-          newFoundRecords[k] = foundRecords[k];
-        }
-        newFoundRecords[found] = record;
-        foundRecords = newFoundRecords;
+        foundRecords.push_back(record);
         found++;
         break;
       }
@@ -113,12 +106,11 @@ const Record **Hash::selMultiple(const char **cpfs, const int quant)
   }
 }
 
-const Record **Hash::selRange(const char *cpfBegin, const char *cpfEnd)
+std::vector<const Record *>Hash::selRange(const char *cpfBegin, const char *cpfEnd)
 {
   this->pos = this->blockg->read(0);
   const Record *record;
-  const Record **foundRecords;
-  const Record **newFoundRecords;
+  std::vector<const Record *>foundRecords;
   int found = 0;
   do
   {
@@ -129,13 +121,7 @@ const Record **Hash::selRange(const char *cpfBegin, const char *cpfEnd)
       {
         if (record->cpfinrange(cpfBegin, cpfEnd))
         {
-          newFoundRecords = (const Record **)malloc((found + 1) * sizeof(Record)); //adds new record to found records
-          for (int k = 0; k < found; k++)
-          {
-            newFoundRecords[k] = foundRecords[k];
-          }
-          newFoundRecords[found] = record;
-          foundRecords = newFoundRecords;
+          foundRecords.push_back(record);
           found++;
           break;
         }

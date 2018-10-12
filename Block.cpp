@@ -10,9 +10,10 @@ Block::Block(const char *filename, const char mode)
   this->reset(); // Reset block
   if (mode == 'o') //use in Hash
   {
-    this->file.open(filename, std::ios_base::out | std::ios_base::app); // Open file in out mode
-    for(int i = 0; i<1000; i++){
-      this->file.put(0x00);
+    std::fstream file;
+    file.open(filename); // Open file in out mode
+    for(int i = 0; i<12800000; i++){
+      file.put(0x00);
     }
   }
   else
@@ -46,7 +47,7 @@ uint32_t Block::count()
   return this->n_r; // Return number of records in this
 }
 
-void Block::write(const Record *r, const uint64_t pos)
+void Block::write(const Record *r, const int pos)
 {
   if (sizeof(Record) * (this->n_r + 1) > Block::MAX_SIZE || pos >= 0)
   {                  // If block is full
@@ -85,7 +86,7 @@ int Block::read(const uint64_t pos)
   return this->file.tellg();
 }
 
-void Block::persist(const uint64_t pos)
+void Block::persist(const int pos)
 {
   this->blocks_used++; // Increment number of write blocks used
   for (uint32_t i = 0; i < this->n_r; i++)
