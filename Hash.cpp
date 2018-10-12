@@ -99,6 +99,34 @@ const Record **Hash::selMultiple(const char **cpfs, const int quant)
 
 const Record **Hash::selRange(const char *cpfBegin, const char *cpfEnd)
 {
+  this->pos = this->blockg->read(0);
+  const Record *record;
+  const Record **foundRecords;
+  const Record **newFoundRecords;
+  int found = 0;
+  do
+  {
+    for (int i = 0; i < this->blockg->count(); i++)
+    {
+      record = this->blockg->get(i);
+      for (int j = 0; j < sizeof(record->cpf); j++)
+      {
+        if (record->cpfinrange(cpfBegin, cpfEnd))
+        {
+          newFoundRecords = (const Record **)malloc((found + 1) * sizeof(Record)); //adds new record to found records
+          for (int k = 0; k < found; k++)
+          {
+            newFoundRecords[k] = foundRecords[k];
+          }
+          newFoundRecords[found] = record;
+          foundRecords = newFoundRecords;
+          found++;
+          break;
+        }
+      }
+    }
+  } while ((this->pos = this->blockg->read(this->pos)) > 0);
+  return foundRecords;
 }
 
 void Hash::del(const char *cpf)
