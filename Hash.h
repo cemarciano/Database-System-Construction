@@ -11,6 +11,7 @@ private:
 public:
   Block *blockp;
   Block *blockg;
+  Hash();
   ~Hash();
   void ins(const char *string);
   void flush();
