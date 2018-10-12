@@ -18,6 +18,8 @@ public:
 
   void ins(const char *string);
   const Record *sel(const char *cpf, bool toDelete=false);
+  const Record **selMultiple(const char **cpfs, const int quant);
+  const Record **selRange(const char *cpfBegin, const char *cpfEnd);
   void del(const char *cpf);
 
   void sort();
