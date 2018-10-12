@@ -3,17 +3,28 @@
 
 Block::Block(const char *filename, const char mode)
 {
-  /* mode = 'w' -> write
+  /* mode = 'o' -> out
+     mode = 'w' -> write
      mode = 'r' -> read
      default -> read */
   this->reset(); // Reset block
-  if (mode == 'w')
-  {                                                // If mode write
-    this->file.open(filename, std::ios_base::app); // Open file in append mode
+  if (mode == 'o') //use in Hash
+  {
+    this->file.open(filename, std::ios_base::out | std::ios_base::app); // Open file in out mode
+    for(int i = 0; i<1000; i++){
+      this->file.put(0x00);
+    }
   }
   else
-  {                                               // If mode read
-    this->file.open(filename, std::ios_base::in); // Open file in input mode
+  {
+    if (mode == 'w')
+    {                                                // If mode write
+      this->file.open(filename, std::ios_base::app); // Open file in append mode
+    }
+    else
+    {                                               // If mode read
+      this->file.open(filename, std::ios_base::in); // Open file in input mode
+    }
   }
   this->blocks_used = 0; // Set blocks_used to 0
 }
@@ -35,11 +46,11 @@ uint32_t Block::count()
   return this->n_r; // Return number of records in this
 }
 
-void Block::write(const Record *r)
+void Block::write(const Record *r, const uint64_t pos)
 {
-  if (sizeof(Record) * (this->n_r + 1) > Block::MAX_SIZE)
+  if (sizeof(Record) * (this->n_r + 1) > Block::MAX_SIZE || pos >= 0)
   {                  // If block is full
-    this->persist(); // Persists block in disk
+    this->persist(pos); // Persists block in disk
   }
   this->records[this->n_r] = r; // Write record in records member
   this->n_r++;                  // Increment number of records
@@ -74,11 +85,14 @@ int Block::read(const uint64_t pos)
   return this->file.tellg();
 }
 
-void Block::persist()
+void Block::persist(const uint64_t pos)
 {
   this->blocks_used++; // Increment number of write blocks used
   for (uint32_t i = 0; i < this->n_r; i++)
   {                                    // For each record
+    if (pos>=0){
+      this->file.seekp(pos);
+    }
     this->file << *(this->records[i]);  // Write this in disk
     delete this->records[i];           // Delete the block's record
     this->records[i] = nullptr;        // Set block's record pointer to null

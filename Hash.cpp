@@ -21,14 +21,28 @@ Hash::~Hash()
   delete this->blockg;
 }
 
-void Hash::ins(const char *record)
+void Hash::ins(const char *string)
 {
+  const Record *record = new Record(string);
+  char cpf[11];
+  memcpy(cpf,record->cpf,11);
+  cpf[11]='\0';
+  std::string cpfString(cpf);
+  this->blockp->write(record,hashFunction(cpfString)/1000000000000000);
+  std::cout<<cpfString<<std::endl;
+  std::cout<<hashFunction(cpfString)/1000000000000000<<std::endl;
+}
+
+void Hash::flush()
+{
+  this->blockp->persist();
 }
 
 const Record *Hash::sel(const char *cpf, bool toDelete)
 {
   std::string cpfString(cpf);
-  this->pos = this->blockg->read(hashFunction(cpfString));
+  this->pos = this->blockg->read(hashFunction(cpfString)/1000000000000000);
+  std::cout<<cpfString<<std::endl<<hashFunction(cpfString)/1000000000000000<<std::endl;
   const Record *record;
   for (int i = 0; i < this->blockg->count(); i++)
   {
