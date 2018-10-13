@@ -28,9 +28,21 @@ void Hash::ins(const char *string)
   memcpy(cpf,record->cpf,11);
   cpf[11]='\0';
   std::string cpfString(cpf);
-  this->blockp->write(record,hashFunction(cpfString)/1000000000000000);
-  std::cout<<cpfString<<std::endl;
-  std::cout<<hashFunction(cpfString)/1000000000000000<<std::endl;
+  int hashPos = hashFunction(cpfString)/1000000000000000
+
+  // Retrieves file:
+  std::ifstream in(filename, std::ifstream::ate | std::ifstream::binary);
+  // Fill remainder of file with null:
+  while (in.tellg()+128 < hashPos){
+	  in << 0x00;
+  }
+
+  // Goes to writing postiion:
+  zeroFile.seekp(hashPos);
+  // Writes to file:
+  in << *record;
+
+  std::cout<< "Inserted " << cpfString << " into position " << hashPos <<std::endl;
 }
 
 void Hash::flush()
