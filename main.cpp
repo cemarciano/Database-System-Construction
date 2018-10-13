@@ -6,7 +6,7 @@
 #include "Sorted.h"
 #include "Hash.h"
 
-#define DATA_STRUCT Hash
+#define DATA_STRUCT Heap
 
 using namespace std;
 
@@ -90,13 +90,13 @@ int main(int argc, char **argv)
   initDb(&db);
 
   // Insert
-  // testInsert(&db);
+  testInsert(&db);
 
   // Select
   // testSelect(&db);
 
   // Select multiple
-  // testSelectMultiple(&db);
+  testSelectMultiple(&db);
 
   // Select range
   // testSelectRange(&db);
