@@ -39,6 +39,10 @@
     "cinttypes": "cpp",
     "array": "cpp",
     "tuple": "cpp",
-    "list": "cpp"
+    "list": "cpp",
+    "unordered_map": "cpp",
+    "vector": "cpp",
+    "functional": "cpp",
+    "sstream": "cpp"
   }
 }

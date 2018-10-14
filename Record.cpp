@@ -1,118 +1,171 @@
 #include "Record.h"
 
 
-std::ostream &print(std::ostream &out, const char *str, size_t sz)
+std::string Record::split(std::string s)
 {
-  for (size_t i = 0; i < sz; i++)
-  {
-    out << str[i];
-    // printf("%c", str[i]);
-  }
-  out << ';';
-  return out;
-  // printf("\n");
+  std::istringstream iss(s);
+  std::string token;
+  std::getline(iss, token, ';');
+  return token;
 }
 
-Record::Record(const char *string)
+Record::Record(const std::string r)
 {
-  int idx = 0;
-  // std::cout << "cpf\t";
-  memcpy(this->cpf, string, sizeof(this->cpf));
-  // print(std::cout, this->cpf, sizeof(this->cpf));
-  // std::cout << std::endl;
-  idx += sizeof(this->cpf) + 1;
-  // std::cout << "rg\t";
-  memcpy(this->rg, string + idx, sizeof(this->rg));
-  // print(std::cout, this->rg, sizeof(this->rg));
-  // std::cout << std::endl;
-  idx += sizeof(this->rg) + 1;
-  // std::cout << "email\t";
-  idx = this->csvcpy(this->email, string, idx, sizeof(this->email)) + 1;
-  // print(std::cout, this->email, sizeof(this->email));
-  // std::cout << std::endl;
-  // std::cout << "dt_nasc\t";
-  memcpy(this->dt_nasc, string + idx, sizeof(this->dt_nasc));
-  // print(std::cout, this->dt_nasc, sizeof(this->dt_nasc));
-  // std::cout << std::endl;
-  idx += sizeof(this->dt_nasc) + 1;
-  // std::cout << "sexo\t";
-  idx = this->csvcpy(this->sexo, string, idx, sizeof(this->sexo)) + 1;
-  // print(std::cout, this->sexo, sizeof(this->sexo));
-  // std::cout << std::endl;
-  // std::cout << "nome\t";
-  idx = this->csvcpy(this->nome, string, idx, sizeof(this->nome)) + 1;
-  // print(std::cout, this->nome, sizeof(this->nome));
-  // std::cout << std::endl;
-  this->salario = std::stof(string + idx);
-  // std::cout << "salario\t" << this->salario << std::endl;
+  std::string fields(r);
+  this->setCpf(Record::split(fields));
+  fields = fields.substr((size_t) Record::split(fields).length() + 1);
+  this->setRg(Record::split(fields));
+  fields = fields.substr((size_t) Record::split(fields).length() + 1);
+  this->setEmail(Record::split(fields));
+  fields = fields.substr((size_t) Record::split(fields).length() + 1);
+  this->setDt_nasc(Record::split(fields));
+  fields = fields.substr((size_t) Record::split(fields).length() + 1);
+  this->setSexo(Record::split(fields));
+  fields = fields.substr((size_t) Record::split(fields).length() + 1);
+  this->setNome(Record::split(fields));
+  fields = fields.substr((size_t) Record::split(fields).length() + 1);
+  this->setSalario(std::stof(Record::split(fields)));
 }
 
 std::ostream &operator<<(std::ostream &out, const Record &r)
 {
-  print(out, r.cpf, sizeof(r.cpf));
-  print(out, r.rg, sizeof(r.rg));
-  print(out, r.email, sizeof(r.email));
-  print(out, r.dt_nasc, sizeof(r.dt_nasc));
-  print(out, r.sexo, sizeof(r.sexo));
-  print(out, r.nome, sizeof(r.nome));
-  return out << r.salario << std::endl;
+  return out << r.cpf << r.rg << r.email << r.dt_nasc << r.sexo << r.nome << r.salario << std::endl;
 }
 
-bool Record::operator<(const Record &r) const
+// bool Record::operator<(const Record &r) const
+// {
+//   // std::cout << this->cpf << " " << r.cpf << std::endl;
+//   for (int i = 0; i < sizeof(this->cpf); i++)
+//   {
+//     if (this->cpf[i] < r.cpf[i])
+//     {
+//       return true;
+//     }
+//   }
+//   return false;
+//   // return (this->cpf < r.cpf);
+// }
+
+// bool Record::cpfcmp(const char *cpf) const
+// {
+//   for (int j = 0; j < 11; j++)
+//   {
+//     if (this->cpf[j] != cpf[j])
+//     {
+//       return false;
+//     }
+//   }
+//   return true;
+// }
+
+// bool Record::cpfinrange(const char *cpfBegin, const char *cpfEnd) const
+// {
+//   char cpf[12];
+//   memcpy(cpf,this->cpf,11);
+//   cpf[11]='\0';
+//   if (strcmp(cpf,cpfBegin)>0 && strcmp(cpf,cpfEnd)<0)
+//   {
+//     return true;
+//   }
+//   return false;
+// }
+
+std::string Record::getCpf()
 {
-  // std::cout << this->cpf << " " << r.cpf << std::endl;
-  for (int i = 0; i < sizeof(this->cpf); i++)
-  {
-    if (this->cpf[i] < r.cpf[i])
-    {
-      return true;
-    }
-  }
-  return false;
-  // return (this->cpf < r.cpf);
+  return this->cpf;
 }
 
-size_t Record::csvcpy(char *dst, const char *src, size_t start, size_t sz)
+std::string Record::getRg()
 {
-  size_t end = start;
-  size_t idx = -1;
-  for (; end < start + sz; end++)
-  {
-    // std::cout << end << "/" << src[end] << std::endl;
-    if (src[end] == ';')
-    {
-      idx = end - start;
-      memcpy(dst, src + start, idx);
-      break;
-    }
-  }
-  if (idx == -1)
-    memcpy(dst, src + start, end - start);
+  return this->rg;
+}
+
+std::string Record::getEmail()
+{
+  return this->email;
+}
+
+std::string Record::getDt_nasc()
+{
+  return this->dt_nasc;
+}
+
+std::string Record::getSexo()
+{
+  return this->sexo;
+}
+
+std::string Record::getNome()
+{
+  return this->nome;
+}
+
+float Record::getSalario()
+{
+  return this->salario;
+}
+
+void Record::setCpf(std::string cpf)
+{
+  if (cpf.length() == 11)
+    this->cpf = cpf;
   else
-    memset(dst + idx, 0x00, sz - idx);
-  return end;
+    std::cout << "O campo CPF precisa de exatamente 11 dígitos." << std::endl;
 }
 
-bool Record::cpfcmp(const char *cpf) const
+void Record::setRg(std::string rg)
 {
-  for (int j = 0; j < 11; j++)
-  {
-    if (this->cpf[j] != cpf[j])
-    {
-      return false;
-    }
-  }
-  return true;
+  if (rg.length() == 12)
+    this->rg = rg;
+  else
+    std::cout << "O campo RG precisa de exatamente 12 dígitos." << std::endl;
 }
 
-bool Record::cpfinrange(const char *cpfBegin, const char *cpfEnd) const
+void Record::setEmail(std::string email)
 {
-  char cpf[12];
-  memcpy(cpf,this->cpf,11);
-  cpf[11]='\0';
-  if (strcmp(cpf,cpfBegin)>0 && strcmp(cpf,cpfEnd)<0)
+  if (email.length() <= 40)
   {
-    return true;
+    this->email = email;
+    for (int i = 0; i < 40 - email.length(); i++)
+      this->email += " ";
   }
-  return false;
+  else
+    std::cout << "O campo EMAIL só pode ter 40 caracteres ou menos.";
+}
+
+void Record::setDt_nasc(std::string dt_nasc)
+{
+  if (dt_nasc.length() == 10)
+    this->dt_nasc = dt_nasc;
+  else
+    std::cout << "O campo DT_NASC deve ser inserido no seguinte formato: dd/mm/aaaa.";
+}
+
+void Record::setSexo(std::string sexo)
+{
+  if (sexo.length() <= 9)
+  {
+    this->sexo = sexo;
+    for (int i = 0; i < 9 - sexo.length(); i++)
+      this->sexo += " ";
+  }
+  else
+    std::cout << "O campo SEXO deve ter menos de 10 caracteres." << std::endl;
+}
+
+void Record::setNome(std::string nome)
+{
+  if (nome.length() <= 40)
+  {
+    this->nome = nome;
+    for (int i = 0; i < 40 - nome.length(); i++)
+      this->nome += " ";
+  }
+  else
+    std::cout << "O campo NOME deve ter menos de 41 caracteres." << std::endl;
+}
+
+void Record::setSalario(float salario)
+{
+  this->salario = salario;
 }
