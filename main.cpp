@@ -2,7 +2,7 @@
 #include <fstream>
 #include <list>
 
-#include "Record.h"
+#include "Block.h"
 // #include "Heap.h"
 // #include "Sorted.h"
 // #include "Hash.h"
@@ -104,13 +104,15 @@ int main(int argc, char **argv)
 
   // Delete
   // testDelete(&db);
-  
-  Record *r = new Record("27295236856;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942");
-  std::cout << "cpf: " << r->getCpf() << std::endl;
-  std::cout << "rg: " << r->getRg() << std::endl;
-  std::cout << "email: " << r->getEmail() << std::endl;
-  std::cout << "data de nascimento: " << r->getDt_nasc() << std::endl;
-  std::cout << "sexo: " << r->getSexo() << std::endl;
-  std::cout << "nome: " << r->getNome() << std::endl;
-  std::cout << "salario: " << r->getSalario() << std::endl;
+
+  Record *r = new Record("27295236856;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5922");
+  std::cout << r->rtoc() << std::endl;
+  // Block *b = new Block("out.txt");
+  // b->write(r, 0);
+  // b->write(r, 1072);
+  // b->write(r, 1072*2);
+  // b->write(r, 1072*3);
+  // b->write(r, 1072*4);
+  // b->write(r, 1072*5);
+  // b->write(r, 1072*6);
 }

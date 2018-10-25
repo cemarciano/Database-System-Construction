@@ -4,41 +4,37 @@
 #include <string>
 #include <iostream>
 #include <cstring>
-#include <sstream>
 
 class Record
 {
 private:
-  size_t csvcpy(char *dst, const char *src, size_t start, size_t sz);
-  std::string cpf, rg, email, dt_nasc, sexo, nome;
+  // Variáveis membro. cpf é chave primária.
+  char cpf[12], rg[13], email[41], dt_nasc[11], sexo[11], nome[41];
   float salario;
 
 public:
-  // char cpf[11], rg[12], email[40], dt_nasc[10], sexo[10], nome[40];
-  // float salario;
+  // Construtor e destrutor
+  Record(const char *r);
 
-  Record(const std::string r);
-  bool cpfcmp(const char *cpf) const;
-  bool cpfinrange(const char *cpf1, const char *cpf2) const;
-  std::string split(std::string s);
+  // Métodos
+  size_t csvcpy(char *dst, const char *src, size_t start, size_t sz);
+  char *rtoc();
 
-  void setCpf(std::string cpf);
-  void setRg(std::string rg);
-  void setEmail(std::string email);
-  void setDt_nasc(std::string dt_nasc);
-  void setSexo(std::string sexo);
-  void setNome(std::string nome);
+  // Getters e Setters
+  void setCpf(char *cpf);
+  void setRg(char *rg);
+  void setEmail(char *email);
+  void setDt_nasc(char *dt_nasc);
+  void setSexo(char *sexo);
+  void setNome(char *nome);
   void setSalario(float salario);
-  std::string getCpf();
-  std::string getRg();
-  std::string getEmail();
-  std::string getDt_nasc();
-  std::string getSexo();
-  std::string getNome();
+  char *getCpf();
+  char *getRg();
+  char *getEmail();
+  char *getDt_nasc();
+  char *getSexo();
+  char *getNome();
   float getSalario();
-
-  friend std::ostream &operator<<(std::ostream &out, const Record &r);
-  bool operator<(const Record &r) const;
 };
 
 #endif
