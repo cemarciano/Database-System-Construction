@@ -14,7 +14,7 @@ class Hash:
     def join(self,other_heap): #apenas para join de cpf; para demais campos, eh necessario usar indice
         pos=0
         self.r_block.read(pos)
-        while(self.r_block.records[0]!=''):
+        while(self.r_block.records[0]):
             for i in self.r_block.records:
                 if i=='\x00'*138:
                     break
@@ -24,8 +24,8 @@ class Hash:
             pos+=self.r_block.max_size*self.r_block.record_size
             self.r_block.read(pos)
 
-a=Hash("teste1.cbd")
-a.insert("11111111111;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
-b=Hash("teste2.cbd")
-b.insert("11111111111;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
-a.join(b)
+#a=Hash("teste1.cbd")
+#a.insert("11111111111;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
+#b=Hash("teste2.cbd")
+#b.insert("11111111111;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
+#a.join(b)
