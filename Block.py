@@ -30,7 +30,7 @@ class Block:
         self.disk.seek(pos)
         # persist each block record to disk file
         for rec in self.records:
-            self.disk.write(rec)
+            self.disk.write(str(rec))
         self.disk.flush()
         # reset list of records
         self.records = []
