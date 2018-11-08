@@ -30,10 +30,14 @@ class Heap:
                     for line in self.indexes[field]:
                         if getattr(Record(i),field)==line.split()[0]:
                             other_heap.r_block.read(line.split()[1])
-                            print(i+"\n"+other_heap.r_block.records[0]+"\n")
+                            for j in other_heap.r_block.records:
+                                if not j:
+                                    break
+                                if getattr(Record(i),field)==getattr(Record(j),field):
+                                    print(i+"\n"+j+"\n")
                 else: #if field is NOT indexed
                     other_heap.r_block.read(other_pos)
-                    while(other_heap.r_block.records[0]!=''):
+                    while(other_heap.r_block.records[0]):
                         for j in other_heap.r_block.records:
                             if not j:
                                 break
