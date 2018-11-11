@@ -9,6 +9,10 @@ class Hash:
         for i in indexBy:
             self.indexes.update({i:open(i+"_"+disk_name,"w+")})
 
+    def __del__(self):
+        for i in self.indexes:
+            self.indexes[i].close()
+
     def insert(self, string):
         rec = Record(string)
         self.w_block.write(abs(hash(rec.cpf)//10**6)*self.w_block.max_size*self.w_block.record_size, rec)
