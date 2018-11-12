@@ -1,4 +1,4 @@
-from Record import *
+# from Record import *
 import os
 
 
@@ -56,8 +56,8 @@ class Block:
             self.records += [self.disk.read(self.record_size)]
 
 
-r = Record("11111111111;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
-b = Block("out.txt")
-b.write(500, str(r))
+# r = Record("11111111111;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
+# b = Block("out.txt")
+# b.write(500, str(r))
 # b.persist(500)
 # b.read(0)
