@@ -24,4 +24,4 @@ class Record:
 
     def __str__(self):
         """ Return all member variables concatenated """
-        return self.cpf+self.rg+self.email+self.nasc+self.sexo+self.nome+self.salario
+        return self.cpf+";"+self.rg+";"+self.email+";"+self.nasc+";"+self.sexo+";"+self.nome+";"+self.salario

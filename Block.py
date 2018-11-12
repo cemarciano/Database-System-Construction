@@ -17,7 +17,7 @@ class Block:
         # set list of records
         self.records = []
         # record size
-        self.record_size = 132
+        self.record_size = 138
         self.pos = 0
 
     def __del__(self):
