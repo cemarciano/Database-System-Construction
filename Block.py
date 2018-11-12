@@ -17,7 +17,7 @@ class Block:
         # set list of records
         self.records = []
         # record size
-        self.record_size = 138
+        self.record_size = 132
         self.pos = 0
 
     def __del__(self):
@@ -54,6 +54,7 @@ class Block:
         self.disk.seek(pos)
         while (len(self.records) < self.max_size):
             self.records += [self.disk.read(self.record_size)]
+
 
 r = Record("11111111111;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
 b = Block("out.txt")
