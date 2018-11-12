@@ -30,18 +30,18 @@ class Hash:
         self.r_block.read(pos)
         while(self.r_block.records[0]):
             for i in self.r_block.records:
-                if i == '\x00'*138:
+                if i == '\x00'*self.r_block.record_size:
                     break
                 if field == "cpf":  # if field is primary key cpf
                     other_heap.r_block.read(
                         abs(hash(Record(i).cpf)//10**6)*self.w_block.max_size*self.w_block.record_size)
-                    if other_heap.r_block.records[0] != '\x00'*138:
+                    if other_heap.r_block.records[0] != '\x00'*self.r_block.record_size:
                         print(i+"\n"+str(other_heap.r_block.records[0])+"\n")
                 else:
-                    if field in self.indexes:  # if field is indexed
-                        for line in self.indexes[field]:
+                    if field in other_heap.indexes:  # if field is indexed
+                        for line in other_heap.indexes[field]:
                             if getattr(Record(i), field) == line.split()[0]:
-                                other_heap.r_block.read(line.split()[1])
+                                other_heap.r_block.read(line.split()[1]*other_heap.r_block.record_size)
                                 for j in other_heap.r_block.records:
                                     if not j:
                                         break
