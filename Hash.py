@@ -13,12 +13,7 @@ class Hash:
             if indexBTree:
                 self.indexes.update({i:BTree(maxDegreeBTree)})
             else:
-                self.indexes.update({i:open(i+"_"+disk_name,"w+")})
-
-    def __del__(self):
-        if not self.indexBTree:
-            for i in self.indexes:
-                self.indexes[i].close()
+                self.indexes.update({i:{}})
 
     def insert(self, string):
         rec = Record(string)
@@ -29,8 +24,7 @@ class Hash:
                 self.indexes[i].insert(getattr(rec,i))
                 self.indexes[i].search(getattr(rec,i))[0].pos=abs(hash(rec.cpf)//10**6)*self.w_block.max_size*self.w_block.record_size
             else:
-                self.indexes[i].write(getattr(rec,i)+" "+str(abs(hash(rec.cpf)//10**6)*self.w_block.max_size*self.w_block.record_size)+"\n")
-                self.indexes[i].flush()
+                self.indexes[i].update({getattr(rec,i):abs(hash(rec.cpf)//10**6)*self.w_block.max_size*self.w_block.record_size})
 
     def join(self,other_hash,field):
         pos=0
@@ -48,9 +42,7 @@ class Hash:
                         if other_hash.indexBTree:
                             other_hash.r_block.read(self.indexes[field].search(getattr(Record(i),field))[0].pos)
                         else:
-                            for line in other_hash.indexes[field]:
-                                if getattr(Record(i),field)==line.split()[0]:
-                                    other_hash.r_block.read(line.split()[1])
+                            other_hash.r_block.read(other_hash.indexes[field][getattr(Record(i),field)])
                         for j in other_hash.r_block.records:
                             if not j:
                                 break
