@@ -14,12 +14,7 @@ class Heap:
             if indexBTree:
                 self.indexes.update({i:BTree(maxDegreeBTree)})
             else:
-                self.indexes.update({i:open(i+"_"+disk_name,"w+")})
-
-    def __del__(self):
-        if not self.indexBTree:
-            for i in self.indexes:
-                self.indexes[i].close()
+                self.indexes.update({i:{}})
 
     def insert(self, string):
         rec = Record(string)
@@ -28,8 +23,7 @@ class Heap:
                 self.indexes[i].insert(getattr(rec,i))
                 self.indexes[i].search(getattr(rec,i))[0].pos=self.w_block.disk.tell()
             else:
-                self.indexes[i].write(getattr(rec,i)+" "+str(self.w_block.disk.tell())+"\n")
-                self.indexes[i].flush()
+                self.indexes[i].update({getattr(rec,i):self.w_block.disk.tell()})
         self.w_block.write(self.w_block.disk.tell(), rec)
 
     def join(self, other_heap, field):
@@ -41,9 +35,7 @@ class Heap:
                     if other_heap.indexBTree:
                         other_heap.r_block.read(self.indexes[field].search(getattr(Record(i),field))[0].pos)
                     else:
-                        for line in other_heap.indexes[field]:
-                            if getattr(Record(i), field) == line.split()[0]:
-                                other_heap.r_block.read(line.split()[1]*other_heap.r_block.record_size)
+                        other_heap.r_block.read(other_heap.indexes[field][getattr(Record(i), field)]*other_heap.r_block.record_size)
                     for j in other_heap.r_block.records:
                         if not j:
                             break
