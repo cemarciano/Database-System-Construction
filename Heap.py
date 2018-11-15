@@ -9,7 +9,7 @@ class Heap:
         self.r_block = Block(disk_name)
         self.w_block = Block(disk_name)
         self.indexes = {}
-        self.indexBTree=indexBTree
+        self.indexBTree = indexBTree
         for i in indexBy:
             if indexBTree:
                 self.indexes.update({i:BTree(maxDegreeBTree)})
@@ -38,7 +38,7 @@ class Heap:
         while(self.r_block.records[0]):
             for i in self.r_block.records:
                 if field in other_heap.indexes:  # if field is indexed
-                    if self.indexBTree:
+                    if other_heap.indexBTree:
                         other_heap.r_block.read(self.indexes[field].search(getattr(Record(i),field))[0].pos)
                     else:
                         for line in other_heap.indexes[field]:
