@@ -1,25 +1,35 @@
 from Record import *
 from Block import *
+from BTree import *
 
 
 class Heap:
-    def __init__(self, disk_name="Heap.cbd", indexBy=[]):
+    def __init__(self, disk_name="Heap.cbd", indexBy=[], indexBTree=True):
+        maxDegreeBTree = 5
         self.r_block = Block(disk_name)
         self.w_block = Block(disk_name)
         self.indexes = {}
+        self.indexBTree=indexBTree
         for i in indexBy:
-            self.indexes.update({i: open(i+"_"+disk_name, "w+")})
+            if indexBTree:
+                self.indexes.update({i:BTree(maxDegreeBTree)})
+            else:
+                self.indexes.update({i:open(i+"_"+disk_name,"w+")})
 
     def __del__(self):
-        for i in self.indexes:
-            self.indexes[i].close()
+        if not self.indexBTree:
+            for i in self.indexes:
+                self.indexes[i].close()
 
     def insert(self, string):
         rec = Record(string)
         for i in self.indexes:
-            self.indexes[i].write(getattr(rec, i)+" " +
-                                  str(self.w_block.disk.tell())+"\n")
-            self.indexes[i].flush()
+            if self.indexBTree:
+                self.indexes[i].insert(getattr(rec,i))
+                self.indexes[i].search(getattr(rec,i))[0].pos=self.w_block.disk.tell()
+            else:
+                self.indexes[i].write(getattr(rec,i)+" "+str(self.w_block.disk.tell())+"\n")
+                self.indexes[i].flush()
         self.w_block.write(self.w_block.disk.tell(), rec)
 
     def join(self, other_heap, field):
@@ -28,14 +38,17 @@ class Heap:
         while(self.r_block.records[0]):
             for i in self.r_block.records:
                 if field in other_heap.indexes:  # if field is indexed
-                    for line in other_heap.indexes[field]:
-                        if getattr(Record(i), field) == line.split()[0]:
-                            other_heap.r_block.read(line.split()[1]*other_heap.r_block.record_size)
-                            for j in other_heap.r_block.records:
-                                if not j:
-                                    break
-                                if getattr(Record(i), field) == getattr(Record(j), field):
-                                    print(i+"\n"+j+"\n")
+                    if self.indexBTree:
+                        other_heap.r_block.read(self.indexes[field].search(getattr(Record(i),field))[0].pos)
+                    else:
+                        for line in other_heap.indexes[field]:
+                            if getattr(Record(i), field) == line.split()[0]:
+                                other_heap.r_block.read(line.split()[1]*other_heap.r_block.record_size)
+                    for j in other_heap.r_block.records:
+                        if not j:
+                            break
+                        if getattr(Record(i), field) == getattr(Record(j), field):
+                            print(i+"\n"+j+"\n")
                 else:  # if field is NOT indexed
                     other_pos = 0
                     other_heap.r_block.read(other_pos)
