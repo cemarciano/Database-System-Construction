@@ -26,20 +26,22 @@ class Heap:
                 self.indexes[i].update({getattr(rec,i):self.w_block.disk.tell()})
         self.w_block.write(self.w_block.disk.tell(), rec)
 
-    def join(self, other_heap, field):
+    def join(self, other_heap, field, other_field=""):
+        if not other_field:
+            other_field=field
         pos, other_pos = 0, 0
         self.r_block.read(pos)
         while(self.r_block.records[0]):
             for i in self.r_block.records:
-                if field in other_heap.indexes:  # if field is indexed
+                if other_field in other_heap.indexes:  # if field is indexed
                     if other_heap.indexBTree:
-                        other_heap.r_block.read(self.indexes[field].search(getattr(Record(i),field))[0].pos)
+                        other_heap.r_block.read(other_heap.indexes[other_field].search(getattr(Record(i),field))[0].pos)
                     else:
-                        other_heap.r_block.read(other_heap.indexes[field][getattr(Record(i), field)]*other_heap.r_block.record_size)
+                        other_heap.r_block.read(other_heap.indexes[other_field][getattr(Record(i), field)]*other_heap.r_block.record_size)
                     for j in other_heap.r_block.records:
                         if not j:
                             break
-                        if getattr(Record(i), field) == getattr(Record(j), field):
+                        if getattr(Record(i), field) == getattr(Record(j), other_field):
                             print(i+"\n"+j+"\n")
                 else:  # if field is NOT indexed
                     other_pos = 0
@@ -48,7 +50,7 @@ class Heap:
                         for j in other_heap.r_block.records:
                             if not j:
                                 break
-                            if getattr(Record(i), field) == getattr(Record(j), field):
+                            if getattr(Record(i), field) == getattr(Record(j), other_field):
                                 print(i+"\n"+j+"\n")
                         other_pos += other_heap.r_block.max_size*other_heap.r_block.record_size
                         other_heap.r_block.read(other_pos)

@@ -26,7 +26,9 @@ class Hash:
             else:
                 self.indexes[i].update({getattr(rec,i):abs(hash(rec.cpf)//10**6)*self.w_block.max_size*self.w_block.record_size})
 
-    def join(self,other_hash,field):
+    def join(self,other_hash,field,other_field=""):
+        if not other_field:
+            other_field=field
         pos=0
         self.r_block.read(pos)
         while(self.r_block.records[0]):
@@ -38,15 +40,15 @@ class Hash:
                     if other_hash.r_block.records[0]!='\x00'*138:
                         print(i+"\n"+str(other_hash.r_block.records[0])+"\n")
                 else:
-                    if field in other_hash.indexes: #if field is indexed
+                    if other_field in other_hash.indexes: #if field is indexed
                         if other_hash.indexBTree:
-                            other_hash.r_block.read(self.indexes[field].search(getattr(Record(i),field))[0].pos)
+                            other_hash.r_block.read(other_hash.indexes[other_field].search(getattr(Record(i),field))[0].pos)
                         else:
-                            other_hash.r_block.read(other_hash.indexes[field][getattr(Record(i),field)])
+                            other_hash.r_block.read(other_hash.indexes[other_field][getattr(Record(i),field)])
                         for j in other_hash.r_block.records:
                             if not j:
                                 break
-                            if getattr(Record(i),field)==getattr(Record(j),field):
+                            if getattr(Record(i),field)==getattr(Record(j),other_field):
                                 print(i+"\n"+j+"\n")
                     else:
                         print("The requested field is not supported.")
@@ -54,8 +56,8 @@ class Hash:
             pos+=self.r_block.max_size*self.r_block.record_size
             self.r_block.read(pos)
 
-#a=Hash("teste1.cbd")
-#a.insert("11111111111;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
-#b=Hash("teste2.cbd")
-#b.insert("11111111111;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
-#a.join(b)
+a=Hash("teste1.cbd")
+a.insert("11111111111;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
+b=Hash("teste2.cbd")
+b.insert("11111111111;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
+a.join(b,"cpf")
