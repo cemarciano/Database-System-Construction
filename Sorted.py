@@ -40,6 +40,16 @@ class Sorted:
         while(self.r_block.records[0]):
             other_sorted.r_block.read(other_pos)
             while(other_sorted.r_block.records[0]):
+                if not self.r_block.records[pos_inside_block]:
+                    pos_inside_block=0
+                    pos+=self.r_block.max_size*self.r_block.record_size
+                    self.r_block.read(pos)
+                    break
+                if not other_sorted.r_block.records[other_pos_inside_block]:
+                    other_pos_inside_block=0
+                    other_pos+=other_sorted.r_block.max_size*other_sorted.r_block.record_size
+                    other_sorted.r_block.read(pos)
+                    break
                 if(getattr(Record(self.r_block.records[pos_inside_block]),field)==getattr(Record(other_sorted.r_block.records[other_pos_inside_block]),other_field)):
                     print(self.r_block.records[pos_inside_block]+"\n"+other_sorted.r_block.records[other_pos_inside_block]+"\n")
                     pos_inside_block+=1 #pair found, moves left table's pointer

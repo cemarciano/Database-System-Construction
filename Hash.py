@@ -33,11 +33,11 @@ class Hash:
         self.r_block.read(pos)
         while(self.r_block.records[0]):
             for i in self.r_block.records:
-                if i=='\x00'*138:
+                if i=='\x00'*self.r_block.record_size or not i:
                     break
                 if field=="cpf": #if field is primary key cpf
                     other_hash.r_block.read(abs(hash(Record(i).cpf)//10**6)*self.w_block.max_size*self.w_block.record_size)
-                    if other_hash.r_block.records[0]!='\x00'*138:
+                    if other_hash.r_block.records[0]!='\x00'*self.r_block.record_size:
                         print(i+"\n"+str(other_hash.r_block.records[0])+"\n")
                 else:
                     if other_field in other_hash.indexes: #if field is indexed
@@ -51,7 +51,7 @@ class Hash:
                             if getattr(Record(i),field)==getattr(Record(j),other_field):
                                 print(i+"\n"+j+"\n")
                     else:
-                        print("The requested field is not supported.")
+                        print("The requested field is not supported yet.")
                         return
             pos+=self.r_block.max_size*self.r_block.record_size
             self.r_block.read(pos)

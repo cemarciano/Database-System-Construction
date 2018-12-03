@@ -33,6 +33,8 @@ class Heap:
         self.r_block.read(pos)
         while(self.r_block.records[0]):
             for i in self.r_block.records:
+                if not i:
+                    break
                 if other_field in other_heap.indexes:  # if field is indexed
                     if other_heap.indexBTree:
                         other_heap.r_block.read(other_heap.indexes[other_field].search(getattr(Record(i),field))[0].pos)
