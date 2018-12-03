@@ -51,8 +51,16 @@ class Hash:
                             if getattr(Record(i),field)==getattr(Record(j),other_field):
                                 print(i+"\n"+j+"\n")
                     else:
-                        print("The requested field is not supported yet.")
-                        return
+                        other_pos = 0
+                        other_hash.r_block.read(other_pos)
+                        while(other_hash.r_block.records[0]):
+                            for j in other_hash.r_block.records:
+                                if j=='\x00'*other_hash.r_block.record_size or not j:
+                                    break
+                                if getattr(Record(i), field) == getattr(Record(j), other_field):
+                                    print(i+"\n"+j+"\n")
+                            other_pos += other_hash.r_block.max_size*other_hash.r_block.record_size
+                            other_hash.r_block.read(other_pos)
             pos+=self.r_block.max_size*self.r_block.record_size
             self.r_block.read(pos)
 
