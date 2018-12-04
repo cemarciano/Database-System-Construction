@@ -85,6 +85,9 @@ a.insert("33333333333;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri 
 b=Heap("teste2.cbd",indexBy=["nome"])
 b.insert("22222222222;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
 
+#a.w_block.persist(0) #debug-only
+#b.w_block.persist(0) #debug-only
+
 a.join(b, "nome")
 
 del a, b
