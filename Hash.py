@@ -8,7 +8,7 @@ from sys import byteorder
 
 class Hash:
     def __init__(self, disk_name="Hash.cbd", indexBy=[], indexBTree=True, indexBPlusTree=False):
-        maxDegreeBTree = 5
+        maxDegreeBTree = 10
         self.r_block = Block(disk_name)
         self.w_block = Block(disk_name)
         self.indexes={}
@@ -83,10 +83,10 @@ class Hash:
             pos+=self.r_block.max_size*self.r_block.record_size
             self.r_block.read(pos)
 
-a=Hash("teste1.cbd",indexBy=["nome"])
-a.insert("11111111111;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
-b=Hash("teste2.cbd",indexBy=["nome"])
-b.insert("11111111111;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
-a.join(b,"cpf")
+#a=Hash("teste1.cbd",indexBy=["nome"])
+#a.insert("11111111111;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
+#b=Hash("teste2.cbd",indexBy=["nome"])
+#b.insert("11111111111;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
+#a.join(b,"cpf")
 
-del a, b
+#del a, b

@@ -65,7 +65,7 @@ class Sorted:
                 if(other_pos_inside_block>=other_sorted.r_block.max_size): #loads right table's next block
                     other_pos_inside_block=0
                     other_pos+=other_sorted.r_block.max_size*other_sorted.r_block.record_size
-                    other_sorted.r_block.read(pos)
+                    other_sorted.r_block.read(other_pos)
                 
 
 # a = Sorted()
@@ -73,10 +73,10 @@ class Sorted:
 # a.insert("33331111111;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
 # a.insert("22222222222;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
 
-a=Sorted("teste1.cbd")
-a.insert("11111111111;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
-a.insert("33333333333;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
-b=Sorted("teste2.cbd")
-b.insert("22222222222;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
+#a=Sorted("teste1.cbd")
+#a.insert("11111111111;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
+#a.insert("33333333333;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
+#b=Sorted("teste2.cbd")
+#b.insert("22222222222;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
 
-a.join(b, "nome")
+#a.join(b, "nome")

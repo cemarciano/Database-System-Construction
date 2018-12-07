@@ -9,7 +9,7 @@ from sys import byteorder
 
 class Heap:
     def __init__(self, disk_name="Heap.cbd", indexBy=[], indexBTree=True, indexBPlusTree=False):
-        maxDegreeBTree = 5
+        maxDegreeBTree = 10
         self.r_block = Block(disk_name)
         self.w_block = Block(disk_name)
         self.indexes = {}
@@ -79,15 +79,15 @@ class Heap:
             self.r_block.read(pos)
 
 
-a=Heap("teste1.cbd",indexBy=["nome"])
-a.insert("11111111111;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
-a.insert("33333333333;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
-b=Heap("teste2.cbd",indexBy=["nome"])
-b.insert("22222222222;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
+#a=Heap("teste1.cbd",indexBy=["nome"])
+#a.insert("11111111111;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
+#a.insert("33333333333;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
+#b=Heap("teste2.cbd",indexBy=["nome"])
+#b.insert("22222222222;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
 
 #a.w_block.persist(0) #debug-only
 #b.w_block.persist(0) #debug-only
 
-a.join(b, "nome")
+#a.join(b, "nome")
 
-del a, b
+#del a, b
