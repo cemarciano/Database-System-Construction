@@ -66,7 +66,28 @@ class Sorted:
                     other_pos_inside_block=0
                     other_pos+=other_sorted.r_block.max_size*other_sorted.r_block.record_size
                     other_sorted.r_block.read(other_pos)
-                
+
+    def join2(self, other_heap, field, other_field=""):
+        if not other_field:
+            other_field=field
+        pos, other_pos = 0, 0
+        self.r_block.read(pos)
+        while(self.r_block.records[0]):
+            for i in self.r_block.records:
+                if not i:
+                    break
+                other_pos = 0
+                other_heap.r_block.read(other_pos)
+                while(other_heap.r_block.records[0]):
+                    for j in other_heap.r_block.records:
+                        if not j:
+                            break
+                        if getattr(Record(i), field) == getattr(Record(j), other_field):
+                            print(i+"\n"+j+"\n")
+                    other_pos += other_heap.r_block.max_size*other_heap.r_block.record_size
+                    other_heap.r_block.read(other_pos)
+            pos += self.r_block.max_size*self.r_block.record_size
+            self.r_block.read(pos)
 
 # a = Sorted()
 # a.insert("11111111111;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
