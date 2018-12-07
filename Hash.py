@@ -14,6 +14,7 @@ class Hash:
         self.indexes={}
         self.indexBTree = indexBTree
         self.indexBPlusTree = indexBPlusTree
+        self.hashedPositions = []
         for i in indexBy:
             if indexBPlusTree:
                 self.indexes.update({i:BPlusTree(getcwd()+"\\"+i+".index",serializer=StrSerializer(),key_size=128)})
@@ -32,6 +33,7 @@ class Hash:
         rec = Record(string)
         self.w_block.write(abs(hash(rec.cpf)//10**6)*self.w_block.max_size*self.w_block.record_size, rec)
         self.w_block.persist(abs(hash(rec.cpf)//10**6)*self.w_block.max_size*self.w_block.record_size)
+        self.hashedPositions += [abs(hash(rec.cpf)//10**6)*self.w_block.max_size*self.w_block.record_size]
         for i in self.indexes:
             if self.indexBPlusTree:
                 self.indexes[i].insert(getattr(rec,i),abs(hash(rec.cpf)//10**6)*self.w_block.max_size*self.w_block.record_size.to_bytes(4,byteorder),True) #True for replacing node, if already existant
@@ -45,9 +47,8 @@ class Hash:
     def join(self,other_hash,field,other_field=""):
         if not other_field:
             other_field=field
-        pos=0
-        self.r_block.read(pos)
-        while(self.r_block.records[0]):
+        for pos in self.hashedPositions:
+            self.r_block.read(pos)
             for i in self.r_block.records:
                 if i=='\x00'*self.r_block.record_size or not i:
                     break
@@ -80,8 +81,6 @@ class Hash:
                                     print(i+"\n"+j+"\n")
                             other_pos += other_hash.r_block.max_size*other_hash.r_block.record_size
                             other_hash.r_block.read(other_pos)
-            pos+=self.r_block.max_size*self.r_block.record_size
-            self.r_block.read(pos)
 
 #a=Hash("teste1.cbd",indexBy=["nome"])
 #a.insert("11111111111;54.037.661-5;estermoro@gmail.com;06/01/1952;Feminino;Yuri Matheus Antonia;5942.00")
